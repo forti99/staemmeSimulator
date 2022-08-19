@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Stall implements Gebaeude {
     private int stufe;
-    private final int id = 3;
     private final Rohstoffe[] baukosten = new Rohstoffe[20];
 
     public Stall(int stufe) {
@@ -50,6 +50,6 @@ public class Stall implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 3;
     }
 }

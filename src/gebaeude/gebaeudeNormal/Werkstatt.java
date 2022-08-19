@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Werkstatt implements Gebaeude {
     private int stufe;
-    private final int id = 4;
     private final Rohstoffe[] baukosten = new Rohstoffe[15];
 
     public Werkstatt(int stufe) {
@@ -46,6 +46,6 @@ public class Werkstatt implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 4;
     }
 }

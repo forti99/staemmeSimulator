@@ -4,44 +4,46 @@ package berechnungen;
 import java.util.ArrayList;
 import java.util.List;
 import gebaeude.*;
+import gebaeude.gebaeudeSonderfunktion.Speicher;
 
-public class Dorf implements Comparable {
+public class Dorf implements Comparable{
 
     private String name;
     private double bisherigeBauzeit = 0;
     private boolean belohnungenAktiv;
+    private final GebaeudeFabrik fabrik = new GebaeudeFabrik();
     private List<Integer> ausbauplan = new ArrayList<>();
     private List<Integer> ausgebauteGebaeude = new ArrayList<>();
-    private Hauptgebaeude hauptgebaeude = new Hauptgebaeude(0);
-    private Kaserne kaserne = new Kaserne(0);
-    private Stall stall = new Stall(0);
-    private Werkstatt werkstatt = new Werkstatt(0);
-    private Adelshof adelshof = new Adelshof(0);
-    private Schmiede schmiede = new Schmiede(0);
-    private Marktplatz marktplatz = new Marktplatz(0);
-    private Holzfaeller holzfaeller = new Holzfaeller(0);
-    private Lehmgrube lehmgrube = new Lehmgrube(0);
-    private Eisenmine eisenmine = new Eisenmine(0);
-    private Bauernhof bauernhof = new Bauernhof(0);
+    private Gebaeude hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE,0);
+    private Gebaeude kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE,0);
+    private Gebaeude stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL,0);
+    private Gebaeude werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT,0);
+    private Gebaeude adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF,0);
+    private Gebaeude schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE,0);
+    private Gebaeude marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ,0);
+    private Gebaeude holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER,0);
+    private Gebaeude lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE,0);
+    private Gebaeude eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE,0);
+    private Gebaeude bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF,0);
     private Speicher speicher;
-    private Wall wall = new Wall(0);
+    private Gebaeude wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL,0);
 
     public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeWall) {
         this.name = name;
         this.belohnungenAktiv = belohnungenAktiv;
-        hauptgebaeude = new Hauptgebaeude(stufeHauptgebaeude);
-        kaserne = new Kaserne(stufeKaserne);
-        stall = new Stall(stufeStall);
-        werkstatt = new Werkstatt(stufeWerkstatt);
-        adelshof = new Adelshof(stufeAdelshof);
-        schmiede = new Schmiede(stufeSchmiede);
-        marktplatz = new Marktplatz(stufeMarktplatz);
-        holzfaeller = new Holzfaeller(stufeHolzfaeller);
-        lehmgrube = new Lehmgrube(stufeLehmgrube);
-        eisenmine = new Eisenmine(stufeEisenmine);
-        bauernhof = new Bauernhof(stufeBauernhof);
+        hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE,stufeHauptgebaeude);
+        kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE,stufeKaserne);
+        stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL,stufeStall);
+        werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT,stufeWerkstatt);
+        adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF,stufeAdelshof);
+        schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE,stufeSchmiede);
+        marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ,stufeMarktplatz);
+        holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER,stufeHolzfaeller);
+        lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE,stufeLehmgrube);
+        eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE,stufeEisenmine);
+        bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF,stufeBauernhof);
         this.speicher = speicher;
-        wall = new Wall(stufeWall);
+        wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL,stufeWall);
     }
 
     public Dorf(double bisherigeBauzeit) {

@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Schmiede implements Gebaeude {
     private int stufe;
-    private final int id = 6;
     private final Rohstoffe[] baukosten = new Rohstoffe[20];
 
     public Schmiede(int stufe) {
@@ -50,6 +50,6 @@ public class Schmiede implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 6;
     }
 }

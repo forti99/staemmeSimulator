@@ -1,7 +1,7 @@
 package berechnungen;
 
 
-import gebaeude.Speicher;
+import gebaeude.gebaeudeSonderfunktion.Speicher;
 
 import java.util.*;
 

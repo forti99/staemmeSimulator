@@ -2,7 +2,7 @@
 
 import berechnungen.Dorf;
 import berechnungen.Simulator;
-import gebaeude.Speicher;
+import gebaeude.gebaeudeSonderfunktion.Speicher;
 
 import java.util.Arrays;
 
@@ -26,7 +26,7 @@ public class Main {
 
         long start2 = System.currentTimeMillis();
         Dorf dorf2 = new Dorf("GoldStar", true, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Speicher(1, 500, 500, 400), 0);
-        Dorf schnellstesDorf2 = simulator.dorfZufaelligAusbauenDoerferAnzahl(dorf2, 20000000, 25, 15, 10, 5, 1, 20, 15, 25, 25, 25, 25, 20);
+        Dorf schnellstesDorf2 = simulator.dorfZufaelligAusbauenDoerferAnzahl(dorf2, 10000, 25, 15, 10, 5, 1, 20, 15, 25, 25, 25, 25, 20);
         long end2 = System.currentTimeMillis();
         System.out.println(schnellstesDorf2);
         System.out.println("Dauer der Suche/Generierung (in Millisekunden) : " + (end2 - start2) );
