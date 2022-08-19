@@ -16,13 +16,6 @@ public class Main {
         System.out.println(dorf0.getBisherigeBauzeit());
         System.out.println(dorf0);
 
-        /*long start1 = System.currentTimeMillis();
-        Dorf dorf1 = new Dorf("Repater", true, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Speicher(1, 500, 500, 400), 0);
-        Dorf schnellstesDorf1 = simulator.dorfZufaelligAusbauenMaxAusbauZeit(dorf1, 258, 25, 15, 10, 5, 1, 20, 15, 25, 25, 25, 25, 20);
-        long end1 = System.currentTimeMillis();
-        System.out.println(schnellstesDorf1.getBisherigeBauzeit());
-        System.out.println(schnellstesDorf1);
-        System.out.println("Dauer der Suche/Generierung (in Sek, abgerunded): " + (end1 - start1) / 1000);*/
 
         long start2 = System.currentTimeMillis();
         Dorf dorf2 = new Dorf("GoldStar", true, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Speicher(1, 500, 500, 400), 0);
@@ -30,5 +23,6 @@ public class Main {
         long end2 = System.currentTimeMillis();
         System.out.println(schnellstesDorf2);
         System.out.println("Dauer der Suche/Generierung (in Millisekunden) : " + (end2 - start2) );
+
     }
 }

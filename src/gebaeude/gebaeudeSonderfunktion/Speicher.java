@@ -20,11 +20,11 @@ public class Speicher implements Gebaeude {
         setBaukostenAndKapazitaet();
     }
 
-    public Speicher (int stufe){
+    public Speicher(int stufe) {
         this.stufe = stufe;
     }
 
-    private void setBaukostenAndKapazitaet(){
+    private void setBaukostenAndKapazitaet() {
         baukosten[0] = new Rohstoffe(60, 50, 40);
         baukosten[1] = new Rohstoffe(76, 64, 50);
         baukosten[2] = new Rohstoffe(96, 81, 62);
@@ -165,12 +165,21 @@ public class Speicher implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 30;
     }
 
     @Override
@@ -181,6 +190,11 @@ public class Speicher implements Gebaeude {
     @Override
     public int getId() {
         return 14;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 
     @Override

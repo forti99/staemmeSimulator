@@ -40,12 +40,21 @@ public class Marktplatz implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 25;
     }
 
     @Override
@@ -56,5 +65,10 @@ public class Marktplatz implements Gebaeude {
     @Override
     public int getId() {
         return 9;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0};
     }
 }

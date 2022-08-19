@@ -1,12 +1,16 @@
 package berechnungen;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import gebaeude.*;
+import gebaeude.Gebaeude;
+import gebaeude.GebaeudeFabrik;
+import gebaeude.GebaeudeTypen;
 import gebaeude.gebaeudeSonderfunktion.Speicher;
 
-public class Dorf implements Comparable{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Dorf implements Comparable {
 
     private String name;
     private double bisherigeBauzeit = 0;
@@ -14,47 +18,80 @@ public class Dorf implements Comparable{
     private final GebaeudeFabrik fabrik = new GebaeudeFabrik();
     private List<Integer> ausbauplan = new ArrayList<>();
     private List<Integer> ausgebauteGebaeude = new ArrayList<>();
-    private Gebaeude hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE,0);
-    private Gebaeude kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE,0);
-    private Gebaeude stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL,0);
-    private Gebaeude werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT,0);
-    private Gebaeude adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF,0);
-    private Gebaeude schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE,0);
-    private Gebaeude marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ,0);
-    private Gebaeude holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER,0);
-    private Gebaeude lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE,0);
-    private Gebaeude eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE,0);
-    private Gebaeude bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF,0);
+    private List<Gebaeude> gebaeudeListe;
+    private int[] gebaeudeStufen = new int[16];
+    private Gebaeude hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE, 0);
+    private Gebaeude kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE, 0);
+    private Gebaeude stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL, 0);
+    private Gebaeude werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT, 0);
+    private Gebaeude adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF, 0);
+    private Gebaeude schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE, 0);
+    private Gebaeude marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ, 0);
+    private Gebaeude holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER, 0);
+    private Gebaeude lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE, 0);
+    private Gebaeude eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE, 0);
+    private Gebaeude bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF, 0);
     private Speicher speicher;
-    private Gebaeude wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL,0);
+    private Gebaeude wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL, 0);
 
     public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeWall) {
         this.name = name;
         this.belohnungenAktiv = belohnungenAktiv;
-        hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE,stufeHauptgebaeude);
-        kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE,stufeKaserne);
-        stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL,stufeStall);
-        werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT,stufeWerkstatt);
-        adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF,stufeAdelshof);
-        schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE,stufeSchmiede);
-        marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ,stufeMarktplatz);
-        holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER,stufeHolzfaeller);
-        lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE,stufeLehmgrube);
-        eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE,stufeEisenmine);
-        bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF,stufeBauernhof);
+        hauptgebaeude = fabrik.erzeugeGebaeude(GebaeudeTypen.HAUPTGEBAEUDE, stufeHauptgebaeude);
+        gebaeudeStufen[hauptgebaeude.getId() - 1] = stufeHauptgebaeude;
+
+        kaserne = fabrik.erzeugeGebaeude(GebaeudeTypen.KASERNE, stufeKaserne);
+        gebaeudeStufen[kaserne.getId() - 1] = stufeKaserne;
+
+        stall = fabrik.erzeugeGebaeude(GebaeudeTypen.STALL, stufeStall);
+        gebaeudeStufen[stall.getId() - 1] = stufeStall;
+
+        werkstatt = fabrik.erzeugeGebaeude(GebaeudeTypen.WERKSTATT, stufeWerkstatt);
+        gebaeudeStufen[werkstatt.getId() - 1] = stufeWerkstatt;
+
+        adelshof = fabrik.erzeugeGebaeude(GebaeudeTypen.ADELSHOF, stufeAdelshof);
+        gebaeudeStufen[adelshof.getId() - 1] = stufeAdelshof;
+
+        schmiede = fabrik.erzeugeGebaeude(GebaeudeTypen.SCHMIEDE, stufeSchmiede);
+        gebaeudeStufen[schmiede.getId() - 1] = stufeSchmiede;
+
+        marktplatz = fabrik.erzeugeGebaeude(GebaeudeTypen.MARKTPLATZ, stufeMarktplatz);
+        gebaeudeStufen[marktplatz.getId() - 1] = stufeMarktplatz;
+
+        holzfaeller = fabrik.erzeugeGebaeude(GebaeudeTypen.HOLZFAELLER, stufeHolzfaeller);
+        gebaeudeStufen[holzfaeller.getId() - 1] = stufeHolzfaeller;
+
+        lehmgrube = fabrik.erzeugeGebaeude(GebaeudeTypen.LEHMGRUBE, stufeLehmgrube);
+        gebaeudeStufen[lehmgrube.getId() - 1] = stufeLehmgrube;
+
+        eisenmine = fabrik.erzeugeGebaeude(GebaeudeTypen.EISENMINE, stufeEisenmine);
+        gebaeudeStufen[eisenmine.getId() - 1] = stufeEisenmine;
+
+        bauernhof = fabrik.erzeugeGebaeude(GebaeudeTypen.BAUERNHOF, stufeBauernhof);
+        gebaeudeStufen[bauernhof.getId() - 1] = stufeBauernhof;
+
         this.speicher = speicher;
-        wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL,stufeWall);
+        gebaeudeStufen[speicher.getId() - 1] = speicher.getStufe();
+
+        wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL, stufeWall);
+        gebaeudeStufen[wall.getId() - 1] = stufeWall;
+
+        gebaeudeListe = Arrays.asList(hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, this.speicher, wall);
     }
 
     public Dorf(double bisherigeBauzeit) {
         this.bisherigeBauzeit = bisherigeBauzeit;
     }
 
-    public double nachPlanAusbauen() {
-        for (Integer integer : ausbauplan) {
-            bisherigeBauzeit += gebaeudeAusbauen(integer);
+    public List<Integer> getMoeglicheGebaudeIDs() {
+        List<Integer> gebaeudeIds = new ArrayList<>();
+
+        for (Gebaeude gebaeude : gebaeudeListe) {
+            if (gebaeude.getStufe() < gebaeude.getMaxStufe() && passenBaukostenInSpeicher(gebaeude, gebaeude.getStufe()) && voraussetzungErfuellt(gebaeude)) {
+                gebaeudeIds.add(gebaeude.getId());
+            }
         }
-        return bisherigeBauzeit;
+        return gebaeudeIds;
     }
 
     public double nachPlanAusbauen(List<Integer> ausbauplan) {
@@ -139,6 +176,7 @@ public class Dorf implements Comparable{
             speicher.addRohstoffe(getBelohnung(gebaeude));
         }
         ausgebauteGebaeude.add(gebaeude.getId());
+        gebaeudeStufen[gebaeude.getId() - 1]++;
 
         return verbleibendeZeit;
     }
@@ -164,6 +202,21 @@ public class Dorf implements Comparable{
         int hoechsteKosten = Math.max(Math.max(holzkosten, lehmkosten), eisenkosten);
 
         return speicher.getKapazizaet() >= hoechsteKosten;
+    }
+
+    private boolean voraussetzungErfuellt(Gebaeude gebaeude) {
+        if (gebaeudeStufen.length != gebaeude.getVoraussetzungen().length) {
+            throw new IllegalArgumentException("Anzahl/Länge der Gebäudestufen und der der Voraussetzungen passen nicht zusammen");
+        } else {
+            int i = 0;
+            while (i < gebaeude.getVoraussetzungen().length) {
+                if (gebaeudeStufen[i] < gebaeude.getVoraussetzungen()[i]) {
+                    return false;
+                }
+                i++;
+            }
+            return true;
+        }
     }
 
     private Rohstoffe getBelohnung(Gebaeude gebaeude) {
@@ -297,9 +350,10 @@ public class Dorf implements Comparable{
                 "\n Stufe Bauernhof:        " + bauernhof.getStufe() +
                 "\n Stufe Speicher:         " + speicher.getStufe() +
                 "\n Stufe Wall:             " + wall.getStufe() +
+                "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausbauplan:             " + ausbauplan +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
-                "\n Bauzeit:                " + bisherigeBauzeit;
+                "\n Bauzeit (in h):         " + bisherigeBauzeit;
     }
 
     @Override
