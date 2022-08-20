@@ -1,12 +1,12 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Holzfaeller implements Gebaeude {
 
     private int stufe;
-    private final int id = 10;
     private final Rohstoffe[] baukosten = new Rohstoffe[30];
 
     public Holzfaeller(int stufe) {
@@ -46,12 +46,21 @@ public class Holzfaeller implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 30;
     }
 
     @Override
@@ -61,6 +70,11 @@ public class Holzfaeller implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 10;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 }

@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Bauernhof implements Gebaeude {
     private int stufe;
-    private final int id = 13;
     private final Rohstoffe[] baukosten = new Rohstoffe[30];
 
     public Bauernhof(int stufe) {
@@ -45,12 +45,21 @@ public class Bauernhof implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 30;
     }
 
     @Override
@@ -60,6 +69,11 @@ public class Bauernhof implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 13;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 }

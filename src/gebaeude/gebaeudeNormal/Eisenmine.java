@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeNormal;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Eisenmine implements Gebaeude {
     private int stufe;
-    private final int id = 12;
     private final Rohstoffe[] baukosten = new Rohstoffe[30];
 
     public Eisenmine(int stufe) {
@@ -45,12 +45,21 @@ public class Eisenmine implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 30;
     }
 
     @Override
@@ -60,6 +69,11 @@ public class Eisenmine implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 12;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 }

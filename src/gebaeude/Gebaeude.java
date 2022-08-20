@@ -9,7 +9,11 @@ public interface Gebaeude {
 
     int getStufe();
 
+    int getMaxStufe();
+
     void setStufe(int stufe);
 
     int getId();
+
+    int[] getVoraussetzungen();
 }

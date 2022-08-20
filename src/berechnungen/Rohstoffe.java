@@ -6,6 +6,9 @@ public class Rohstoffe {
     private int eisen;
 
     public Rohstoffe() {
+        this.holz = 0;
+        this.lehm = 0;
+        this.eisen = 0;
     }
 
     public Rohstoffe(int holz, int lehm, int eisen) {

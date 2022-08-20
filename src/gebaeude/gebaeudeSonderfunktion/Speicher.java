@@ -1,11 +1,11 @@
-package gebaeude;
+package gebaeude.gebaeudeSonderfunktion;
 
 
 import berechnungen.Rohstoffe;
+import gebaeude.Gebaeude;
 
 public class Speicher implements Gebaeude {
     private int stufe;
-    private final int id = 14;
     private final Rohstoffe[] baukosten = new Rohstoffe[30];
     private final int[] kapazitaet = new int[30];
     private final Rohstoffe rohstoffvorrat = new Rohstoffe(500, 500, 400); //Bei Weltenstart startet man mit den initialisierten Rohstoffen
@@ -17,6 +17,15 @@ public class Speicher implements Gebaeude {
         rohstoffvorrat.setLehm(lehmvorrat);
         rohstoffvorrat.setEisen(eisenvorrat);
 
+        setBaukostenAndKapazitaet();
+    }
+
+    public Speicher(int stufe) {
+        this.stufe = stufe;
+        setBaukostenAndKapazitaet();
+    }
+
+    private void setBaukostenAndKapazitaet() {
         baukosten[0] = new Rohstoffe(60, 50, 40);
         baukosten[1] = new Rohstoffe(76, 64, 50);
         baukosten[2] = new Rohstoffe(96, 81, 62);
@@ -157,12 +166,21 @@ public class Speicher implements Gebaeude {
 
     @Override
     public Rohstoffe getBaukosten(int stufe) {
-        return baukosten[stufe - 1];
+        if (stufe == 0) {
+            return new Rohstoffe();
+        } else {
+            return baukosten[stufe - 1];
+        }
     }
 
     @Override
     public int getStufe() {
         return stufe;
+    }
+
+    @Override
+    public int getMaxStufe() {
+        return 30;
     }
 
     @Override
@@ -172,7 +190,12 @@ public class Speicher implements Gebaeude {
 
     @Override
     public int getId() {
-        return id;
+        return 14;
+    }
+
+    @Override
+    public int[] getVoraussetzungen() {
+        return new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 
     @Override
