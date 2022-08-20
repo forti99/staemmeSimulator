@@ -22,6 +22,7 @@ public class Speicher implements Gebaeude {
 
     public Speicher(int stufe) {
         this.stufe = stufe;
+        setBaukostenAndKapazitaet();
     }
 
     private void setBaukostenAndKapazitaet() {

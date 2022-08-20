@@ -13,5 +13,7 @@ public enum GebaeudeTypen {
     SPEICHER,
     STALL,
     WALL,
-    WERKSTATT
+    WERKSTATT,
+    STATUE,
+    VERSAMMLUNGSPLATZ
 }

@@ -45,6 +45,12 @@ public class GebaeudeFabrik {
             case WERKSTATT -> {
                 return new Werkstatt(stufe);
             }
+            case STATUE -> {
+                return new Statue(stufe);
+            }
+            case VERSAMMLUNGSPLATZ -> {
+                return new Versammlungsplatz(stufe);
+            }
             default -> throw new IllegalArgumentException();
         }
     }
