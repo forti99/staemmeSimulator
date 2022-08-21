@@ -14,16 +14,15 @@ import java.util.Random;
 public class Dorf implements Comparable {
 
     private final String name;
-    private final double bisherigeBauzeit = 0;
+    private double bisherigeBauzeit = 0;
     private final boolean belohnungenAktiv;
-    private final List<Integer> ausbauplan = new ArrayList<>();
     private final List<Integer> ausgebauteGebaeude = new ArrayList<>();
     private final List<Gebaeude> gebaeudeListe;
     private final int[] gebaeudeStufen = new int[16];
-    private final Gebaeude hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, wall;
+    private final Gebaeude hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, wall, versteck;
     private final Speicher speicher;
 
-    public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeVersammlungsplatz, int stufeStatue, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeWall) {
+    public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeVersammlungsplatz, int stufeStatue, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeVersteck, int stufeWall) {
         this.name = name;
         this.belohnungenAktiv = belohnungenAktiv;
         GebaeudeFabrik fabrik = new GebaeudeFabrik();
@@ -69,12 +68,14 @@ public class Dorf implements Comparable {
         this.speicher = speicher;
         gebaeudeStufen[speicher.getId() - 1] = speicher.getStufe();
 
+        versteck = fabrik.erzeugeGebaeude(GebaeudeTypen.VERSTECK, stufeVersteck);
+        gebaeudeStufen[versteck.getId() - 1] = stufeVersteck;
+
         wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL, stufeWall);
         gebaeudeStufen[wall.getId() - 1] = stufeWall;
 
         gebaeudeListe = Arrays.asList(hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, this.speicher, wall);
     }
-
 
     public double genauNachStufenAusbauen(int[] gebaeudeStufen) {
         double bauzeit = 0;
@@ -200,6 +201,7 @@ public class Dorf implements Comparable {
         ausgebauteGebaeude.add(gebaeude.getId());
         gebaeudeStufen[gebaeude.getId() - 1]++;
 
+        this.bisherigeBauzeit += verbleibendeZeit;
         return verbleibendeZeit;
     }
 
@@ -268,7 +270,7 @@ public class Dorf implements Comparable {
     }
 
     public Dorf dorfKopieren() {
-        return new Dorf(name, belohnungenAktiv, holzfaeller.getStufe(), kaserne.getStufe(), stall.getStufe(), werkstatt.getStufe(), adelshof.getStufe(), schmiede.getStufe(), versammlungsplatz.getStufe(), statue.getStufe(), marktplatz.getStufe(), holzfaeller.getStufe(), lehmgrube.getStufe(), eisenmine.getStufe(), bauernhof.getStufe(), speicher, wall.getStufe());
+        return new Dorf(name, belohnungenAktiv, holzfaeller.getStufe(), kaserne.getStufe(), stall.getStufe(), werkstatt.getStufe(), adelshof.getStufe(), schmiede.getStufe(), versammlungsplatz.getStufe(), statue.getStufe(), marktplatz.getStufe(), holzfaeller.getStufe(), lehmgrube.getStufe(), eisenmine.getStufe(), bauernhof.getStufe(), speicher, versteck.getStufe(), wall.getStufe());
     }
 
     public int getProduktionHolz() {
@@ -285,6 +287,90 @@ public class Dorf implements Comparable {
 
     public Gebaeude getSpeicher() {
         return speicher;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getBisherigeBauzeit() {
+        return bisherigeBauzeit;
+    }
+
+    public boolean isBelohnungenAktiv() {
+        return belohnungenAktiv;
+    }
+
+    public List<Integer> getAusgebauteGebaeude() {
+        return ausgebauteGebaeude;
+    }
+
+    public List<Gebaeude> getGebaeudeListe() {
+        return gebaeudeListe;
+    }
+
+    public int[] getGebaeudeStufen() {
+        return gebaeudeStufen;
+    }
+
+    public Gebaeude getHauptgebaeude() {
+        return hauptgebaeude;
+    }
+
+    public Gebaeude getKaserne() {
+        return kaserne;
+    }
+
+    public Gebaeude getStall() {
+        return stall;
+    }
+
+    public Gebaeude getWerkstatt() {
+        return werkstatt;
+    }
+
+    public Gebaeude getAdelshof() {
+        return adelshof;
+    }
+
+    public Gebaeude getSchmiede() {
+        return schmiede;
+    }
+
+    public Gebaeude getVersammlungsplatz() {
+        return versammlungsplatz;
+    }
+
+    public Gebaeude getStatue() {
+        return statue;
+    }
+
+    public Gebaeude getMarktplatz() {
+        return marktplatz;
+    }
+
+    public Gebaeude getHolzfaeller() {
+        return holzfaeller;
+    }
+
+    public Gebaeude getLehmgrube() {
+        return lehmgrube;
+    }
+
+    public Gebaeude getEisenmine() {
+        return eisenmine;
+    }
+
+    public Gebaeude getBauernhof() {
+        return bauernhof;
+    }
+
+    public Gebaeude getWall() {
+        return wall;
+    }
+
+    public Gebaeude getVersteck() {
+        return versteck;
     }
 
     @Override
@@ -306,9 +392,9 @@ public class Dorf implements Comparable {
                 "\n Stufe Eisenmine:        " + eisenmine.getStufe() +
                 "\n Stufe Bauernhof:        " + bauernhof.getStufe() +
                 "\n Stufe Speicher:         " + speicher.getStufe() +
+                "\n Stufe Versteck:         " + versteck.getStufe() +
                 "\n Stufe Wall:             " + wall.getStufe() +
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
-                "\n Ausbauplan:             " + ausbauplan +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;
     }

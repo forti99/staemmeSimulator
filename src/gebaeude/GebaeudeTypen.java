@@ -15,5 +15,6 @@ public enum GebaeudeTypen {
     WALL,
     WERKSTATT,
     STATUE,
-    VERSAMMLUNGSPLATZ
+    VERSAMMLUNGSPLATZ,
+    VERSTECK
 }
