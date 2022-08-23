@@ -14,16 +14,15 @@ import java.util.Random;
 public class Dorf implements Comparable {
 
     private final String name;
-    private final double bisherigeBauzeit = 0;
+    private double bisherigeBauzeit = 0;
     private final boolean belohnungenAktiv;
-    private final List<Integer> ausbauplan = new ArrayList<>();
     private final List<Integer> ausgebauteGebaeude = new ArrayList<>();
     private final List<Gebaeude> gebaeudeListe;
     private final int[] gebaeudeStufen = new int[16];
-    private final Gebaeude hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, wall;
+    private final Gebaeude hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, wall, versteck;
     private final Speicher speicher;
 
-    public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeVersammlungsplatz, int stufeStatue, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeWall) {
+    public Dorf(String name, boolean belohnungenAktiv, int stufeHauptgebaeude, int stufeKaserne, int stufeStall, int stufeWerkstatt, int stufeAdelshof, int stufeSchmiede, int stufeVersammlungsplatz, int stufeStatue, int stufeMarktplatz, int stufeHolzfaeller, int stufeLehmgrube, int stufeEisenmine, int stufeBauernhof, Speicher speicher, int stufeVersteck, int stufeWall) {
         this.name = name;
         this.belohnungenAktiv = belohnungenAktiv;
         GebaeudeFabrik fabrik = new GebaeudeFabrik();
@@ -69,12 +68,14 @@ public class Dorf implements Comparable {
         this.speicher = speicher;
         gebaeudeStufen[speicher.getId() - 1] = speicher.getStufe();
 
+        versteck = fabrik.erzeugeGebaeude(GebaeudeTypen.VERSTECK, stufeVersteck);
+        gebaeudeStufen[versteck.getId() - 1] = stufeVersteck;
+
         wall = fabrik.erzeugeGebaeude(GebaeudeTypen.WALL, stufeWall);
         gebaeudeStufen[wall.getId() - 1] = stufeWall;
 
         gebaeudeListe = Arrays.asList(hauptgebaeude, kaserne, stall, werkstatt, adelshof, schmiede, versammlungsplatz, statue, marktplatz, holzfaeller, lehmgrube, eisenmine, bauernhof, this.speicher, wall);
     }
-
 
     public double genauNachStufenAusbauen(int[] gebaeudeStufen) {
         double bauzeit = 0;
@@ -117,7 +118,7 @@ public class Dorf implements Comparable {
         List<Integer> gebaeudeIds = new ArrayList<>();
 
         for (Gebaeude gebaeude : gebaeudeListe) {
-            if (gebaeude.getStufe() < gebaeude.getMaxStufe() && passenBaukostenInSpeicher(gebaeude, gebaeude.getStufe()) && voraussetzungErfuellt(gebaeude)) {
+            if (gebaeude.getStufe() < gebaeude.getMaxStufe() && speicher.passenBaukostenInSpeicher(gebaeude, gebaeude.getStufe()) && voraussetzungErfuellt(gebaeude)) {
                 gebaeudeIds.add(gebaeude.getId());
             }
         }
@@ -148,6 +149,7 @@ public class Dorf implements Comparable {
             case 12 -> gebaeude = this.eisenmine;
             case 13 -> gebaeude = this.bauernhof;
             case 14 -> gebaeude = this.speicher;
+            case 15 -> gebaeude = this.versteck;
             case 16 -> gebaeude = this.wall;
             default -> throw new IllegalArgumentException("Falsche ID beim Gebäudebau übergeben!");
 
@@ -157,7 +159,7 @@ public class Dorf implements Comparable {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
         double verbleibendeZeit = 0;
 
-        if (!passenBaukostenInSpeicher(gebaeude, neueStufe)) {
+        if (!speicher.passenBaukostenInSpeicher(gebaeude, neueStufe)) {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeude, neueStufe);
         }
 
@@ -188,6 +190,7 @@ public class Dorf implements Comparable {
         speicher.addHolz((int) Math.ceil(verbleibendeZeit * getProduktionHolz()));
         speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktionLehm()));
         speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktionEisen()));
+
         speicher.addHolz(-gebaeude.getBaukosten(neueStufe).getHolz());
         speicher.addLehm(-gebaeude.getBaukosten(neueStufe).getLehm());
         speicher.addEisen(-gebaeude.getBaukosten(neueStufe).getEisen());
@@ -195,11 +198,13 @@ public class Dorf implements Comparable {
         //Stufe des Gebaeudes wird erhoeht und die Rohstoffe für den abgeschlossenen Bau hinzugefuegt (falls Belohnungen aktiv sind)
         gebaeude.setStufe(neueStufe);
         if (belohnungenAktiv) {
-            speicher.addRohstoffe(getBelohnung(gebaeude));
+            speicher.addRohstoffe(Einstellungen.getBelohnung(gebaeude));
         }
+
         ausgebauteGebaeude.add(gebaeude.getId());
         gebaeudeStufen[gebaeude.getId() - 1]++;
 
+        this.bisherigeBauzeit += verbleibendeZeit;
         return verbleibendeZeit;
     }
 
@@ -211,24 +216,10 @@ public class Dorf implements Comparable {
      */
     public double speicherFuerGebaeudeAusbauen(Gebaeude gebaeude, int stufe) {
         double bauzeit = 0;
-        while (!passenBaukostenInSpeicher(gebaeude, stufe)) {
+        while (!speicher.passenBaukostenInSpeicher(gebaeude, stufe)) {
             bauzeit += gebaeudeAusbauen(14);
         }
         return bauzeit;
-    }
-
-    public boolean passenBaukostenInSpeicher(Gebaeude gebaeude, int stufe) {
-        //Baukosten des Speichers passen immer in den Speicher
-        if (gebaeude.getId() == 14) {
-            return true;
-        } else {
-            int holzkosten = gebaeude.getBaukosten(stufe).getHolz();
-            int lehmkosten = gebaeude.getBaukosten(stufe).getLehm();
-            int eisenkosten = gebaeude.getBaukosten(stufe).getEisen();
-            int hoechsteKosten = Math.max(Math.max(holzkosten, lehmkosten), eisenkosten);
-
-            return speicher.getKapazizaet() >= hoechsteKosten;
-        }
     }
 
     private boolean voraussetzungErfuellt(Gebaeude gebaeude) {
@@ -237,8 +228,10 @@ public class Dorf implements Comparable {
         } else {
             int i = 0;
             while (i < gebaeude.getVoraussetzungen().length) {
-                if (gebaeudeStufen[i] < gebaeude.getVoraussetzungen()[i]) {
-                    return false;
+                if (gebaeudeStufen[i] != 0) {
+                    if (gebaeudeStufen[i] < gebaeude.getVoraussetzungen()[i]) {
+                        return false;
+                    }
                 }
                 i++;
             }
@@ -246,29 +239,8 @@ public class Dorf implements Comparable {
         }
     }
 
-    private Rohstoffe getBelohnung(Gebaeude gebaeude) {
-        Rohstoffe belohnung = gebaeude.getBaukosten(gebaeude.getStufe());
-
-        belohnung.setHolz((int) (belohnung.getHolz() * 0.1));
-        if (belohnung.getHolz() < 150) {
-            belohnung.setHolz(150);
-        }
-
-        belohnung.setLehm((int) (belohnung.getLehm() * 0.1));
-        if (belohnung.getLehm() < 150) {
-            belohnung.setLehm(150);
-        }
-
-        belohnung.setEisen((int) (belohnung.getEisen() * 0.1));
-        if (belohnung.getEisen() < 150) {
-            belohnung.setEisen(150);
-        }
-
-        return belohnung;
-    }
-
-    public Dorf dorfKopieren() {
-        return new Dorf(name, belohnungenAktiv, holzfaeller.getStufe(), kaserne.getStufe(), stall.getStufe(), werkstatt.getStufe(), adelshof.getStufe(), schmiede.getStufe(), versammlungsplatz.getStufe(), statue.getStufe(), marktplatz.getStufe(), holzfaeller.getStufe(), lehmgrube.getStufe(), eisenmine.getStufe(), bauernhof.getStufe(), speicher, wall.getStufe());
+    public Dorf dorfKopierenSpeicherZuruecksetzen(Speicher speicher) {
+        return new Dorf(name, belohnungenAktiv, holzfaeller.getStufe(), kaserne.getStufe(), stall.getStufe(), werkstatt.getStufe(), adelshof.getStufe(), schmiede.getStufe(), versammlungsplatz.getStufe(), statue.getStufe(), marktplatz.getStufe(), holzfaeller.getStufe(), lehmgrube.getStufe(), eisenmine.getStufe(), bauernhof.getStufe(), speicher, versteck.getStufe(), wall.getStufe());
     }
 
     public int getProduktionHolz() {
@@ -285,6 +257,90 @@ public class Dorf implements Comparable {
 
     public Gebaeude getSpeicher() {
         return speicher;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getBisherigeBauzeit() {
+        return bisherigeBauzeit;
+    }
+
+    public boolean isBelohnungenAktiv() {
+        return belohnungenAktiv;
+    }
+
+    public List<Integer> getAusgebauteGebaeude() {
+        return ausgebauteGebaeude;
+    }
+
+    public List<Gebaeude> getGebaeudeListe() {
+        return gebaeudeListe;
+    }
+
+    public int[] getGebaeudeStufen() {
+        return gebaeudeStufen;
+    }
+
+    public Gebaeude getHauptgebaeude() {
+        return hauptgebaeude;
+    }
+
+    public Gebaeude getKaserne() {
+        return kaserne;
+    }
+
+    public Gebaeude getStall() {
+        return stall;
+    }
+
+    public Gebaeude getWerkstatt() {
+        return werkstatt;
+    }
+
+    public Gebaeude getAdelshof() {
+        return adelshof;
+    }
+
+    public Gebaeude getSchmiede() {
+        return schmiede;
+    }
+
+    public Gebaeude getVersammlungsplatz() {
+        return versammlungsplatz;
+    }
+
+    public Gebaeude getStatue() {
+        return statue;
+    }
+
+    public Gebaeude getMarktplatz() {
+        return marktplatz;
+    }
+
+    public Gebaeude getHolzfaeller() {
+        return holzfaeller;
+    }
+
+    public Gebaeude getLehmgrube() {
+        return lehmgrube;
+    }
+
+    public Gebaeude getEisenmine() {
+        return eisenmine;
+    }
+
+    public Gebaeude getBauernhof() {
+        return bauernhof;
+    }
+
+    public Gebaeude getWall() {
+        return wall;
+    }
+
+    public Gebaeude getVersteck() {
+        return versteck;
     }
 
     @Override
@@ -306,9 +362,9 @@ public class Dorf implements Comparable {
                 "\n Stufe Eisenmine:        " + eisenmine.getStufe() +
                 "\n Stufe Bauernhof:        " + bauernhof.getStufe() +
                 "\n Stufe Speicher:         " + speicher.getStufe() +
+                "\n Stufe Versteck:         " + versteck.getStufe() +
                 "\n Stufe Wall:             " + wall.getStufe() +
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
-                "\n Ausbauplan:             " + ausbauplan +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;
     }

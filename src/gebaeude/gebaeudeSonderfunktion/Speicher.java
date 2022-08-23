@@ -8,7 +8,7 @@ public class Speicher implements Gebaeude {
     private int stufe;
     private final Rohstoffe[] baukosten = new Rohstoffe[30];
     private final int[] kapazitaet = new int[30];
-    private final Rohstoffe rohstoffvorrat = new Rohstoffe(500, 500, 400); //Bei Weltenstart startet man mit den initialisierten Rohstoffen
+    private final Rohstoffe rohstoffvorrat = new Rohstoffe(0, 0, 0); //Bei Weltenstart startet man mit den initialisierten Rohstoffen
     private final Rohstoffe uebergelaufeneRohstoffe = new Rohstoffe(0, 0, 0);
 
     public Speicher(int stufe, int holzvorrat, int lehmvorrat, int eisenvorrat) {
@@ -89,6 +89,15 @@ public class Speicher implements Gebaeude {
         kapazitaet[29] = 400000;
     }
 
+    public boolean passenBaukostenInSpeicher(Gebaeude gebaeude, int stufe) {
+        int holzkosten = gebaeude.getBaukosten(stufe).getHolz();
+        int lehmkosten = gebaeude.getBaukosten(stufe).getLehm();
+        int eisenkosten = gebaeude.getBaukosten(stufe).getEisen();
+        int hoechsteKosten = Math.max(Math.max(holzkosten, lehmkosten), eisenkosten);
+
+        return getKapazitaet() >= hoechsteKosten;
+    }
+
     public void addRohstoffe(Rohstoffe rohstoffe) {
         addHolz(rohstoffe.getHolz());
         addLehm(rohstoffe.getLehm());
@@ -101,7 +110,7 @@ public class Speicher implements Gebaeude {
             int zuvieleRohstoffe = getHolzvorrat() - kapazitaet[stufe - 1];
             uebergelaufeneRohstoffe.addHolz(zuvieleRohstoffe);
             setHolz(kapazitaet[stufe - 1]);
-        } else if (getHolzvorrat() < -1) { //-1 ist wegen Rundungsfehlern erlaubt
+        } else if (getHolzvorrat() < 0) {
             throw new ArithmeticException("Speicherinhalt negativ");
         }
     }
@@ -112,7 +121,7 @@ public class Speicher implements Gebaeude {
             int zuvieleRohstoffe = getLehmvorrat() - kapazitaet[stufe - 1];
             uebergelaufeneRohstoffe.addLehm(zuvieleRohstoffe);
             setLehm(kapazitaet[stufe - 1]);
-        } else if (getLehmvorrat() < -1) {//-1 ist wegen Rundungsfehlern erlaubt
+        } else if (getLehmvorrat() < 0) {
             throw new ArithmeticException("Speicherinhalt negativ");
         }
     }
@@ -123,7 +132,7 @@ public class Speicher implements Gebaeude {
             int zuvieleRohstoffe = getEisenvorrat() - kapazitaet[stufe - 1];
             uebergelaufeneRohstoffe.addEisen(zuvieleRohstoffe);
             setEisen(kapazitaet[stufe - 1]);
-        } else if (getEisenvorrat() < -1) {//-1 ist wegen Rundungsfehlern erlaubt
+        } else if (getEisenvorrat() < 0) {
             throw new ArithmeticException("Speicherinhalt negativ");
         }
     }
@@ -152,7 +161,7 @@ public class Speicher implements Gebaeude {
         return rohstoffvorrat.getEisen();
     }
 
-    public int getKapazizaet() {
+    public int getKapazitaet() {
         return kapazitaet[stufe - 1];
     }
 

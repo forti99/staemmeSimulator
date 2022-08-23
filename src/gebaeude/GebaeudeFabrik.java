@@ -51,6 +51,10 @@ public class GebaeudeFabrik {
             case VERSAMMLUNGSPLATZ -> {
                 return new Versammlungsplatz(stufe);
             }
+
+            case VERSTECK ->{
+                return new Versteck(stufe);
+            }
             default -> throw new IllegalArgumentException();
         }
     }
