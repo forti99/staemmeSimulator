@@ -1,6 +1,8 @@
 package berechnungen;
 
 
+import gebaeude.gebaeudeSonderfunktion.Speicher;
+
 public class Simulator {
 
     public SimErgebnis nachStufenAusbauen(Dorf dorf, int[] gebaeudeStufen, int anzahlVersuche) {
@@ -11,7 +13,7 @@ public class Simulator {
         double bauzeit;
         final long timeStart = System.currentTimeMillis();
         for (int i = 0; i < anzahlVersuche; i++) {
-            dorfFuerAusbau = dorf.dorfKopieren();
+            dorfFuerAusbau = dorf.dorfKopierenSpeicherZuruecksetzen(new Speicher(dorf.getSpeicher().getStufe()));
             bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufen);
             System.out.println("Durchläufe im Simulator: " + i);
             if (bauzeit < minBauzeit) {
