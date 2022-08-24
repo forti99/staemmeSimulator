@@ -1,35 +1,21 @@
 package berechnungen;
 
-import gebaeude.gebaeudeSonderfunktion.Speicher;
+import gebaeude.GebaeudeDaten;
 
 import java.util.Arrays;
 
+import static gebaeude.GebaeudeTypen.*;
+
 public class SimErgebnis {
-    private int durchlaeufe;
-    private int durchlaeufMitOptimalemDorf;
-    private Dorf optimalesDorf;
-    private long laufzeit;
+    private final int durchlaeufe;
+    private final Dorf optimalesDorf;
+    private final GebaeudeDaten gebaeudeDaten;
+    private final long laufzeit;
 
-    public SimErgebnis(int durchlaeufe, int durchlaeufMitOptimalemDorf, Dorf optimalesDorf, long laufzeit) {
+    public SimErgebnis(int durchlaeufe, Dorf optimalesDorf, long laufzeit) {
         this.durchlaeufe = durchlaeufe;
-        this.durchlaeufMitOptimalemDorf = durchlaeufMitOptimalemDorf;
         this.optimalesDorf = optimalesDorf;
-        this.laufzeit = laufzeit;
-    }
-
-    public void setDurchlaeufe(int durchlaeufe) {
-        this.durchlaeufe = durchlaeufe;
-    }
-
-    public void setDurchlaeufMitOptimalemDorf(int durchlaeufMitOptimalemDorf) {
-        this.durchlaeufMitOptimalemDorf = durchlaeufMitOptimalemDorf;
-    }
-
-    public void setOptimalesDorf(Dorf optimalesDorf) {
-        this.optimalesDorf = optimalesDorf;
-    }
-
-    public void setLaufzeit(long laufzeit) {
+        this.gebaeudeDaten = this.optimalesDorf.getGebaeudeDaten();
         this.laufzeit = laufzeit;
     }
 
@@ -38,26 +24,25 @@ public class SimErgebnis {
         return "\n Anzahl Durchläufe:                      " + durchlaeufe +
                 "\n Durchlaufzeit (in ms):                  " + laufzeit +
                 "\n Laufzeit pro Dorfberechnung (in ms):    " + laufzeit / (float) durchlaeufe +
-                "\n Durchlauf mit optimalem Dorf:           " + durchlaeufMitOptimalemDorf +
                 "\n Dorfname:                               " + optimalesDorf.getName() +
-                "\n Speicherinhalt:                         " + ((Speicher) optimalesDorf.getSpeicher()).getRohstoffvorrat() +
-                "\n verlorene Rohstoffe:                    " + ((Speicher) optimalesDorf.getSpeicher()).getUebergelaufeneRohstoffe() +
-                "\n Stufe Hauptgebaeude:                    " + optimalesDorf.getHauptgebaeude().getStufe() +
-                "\n Stufe Kaserne:                          " + optimalesDorf.getKaserne().getStufe() +
-                "\n Stufe Stall:                            " + optimalesDorf.getStall().getStufe() +
-                "\n Stufe Werkstatt:                        " + optimalesDorf.getWerkstatt().getStufe() +
-                "\n Stufe Adelshof:                         " + optimalesDorf.getAdelshof().getStufe() +
-                "\n Stufe Schmiede:                         " + optimalesDorf.getSchmiede().getStufe() +
-                "\n Stufe Versammlungsplatz:                " + optimalesDorf.getVersammlungsplatz().getStufe() +
-                "\n Stufe Statue:                           " + optimalesDorf.getStatue().getStufe() +
-                "\n Stufe Marktplatz:                       " + optimalesDorf.getMarktplatz().getStufe() +
-                "\n Stufe Holzfaeller:                      " + optimalesDorf.getHolzfaeller().getStufe() +
-                "\n Stufe Lehmgrube:                        " + optimalesDorf.getLehmgrube().getStufe() +
-                "\n Stufe Eisenmine:                        " + optimalesDorf.getEisenmine().getStufe() +
-                "\n Stufe Bauernhof:                        " + optimalesDorf.getBauernhof().getStufe() +
-                "\n Stufe Speicher:                         " + optimalesDorf.getSpeicher().getStufe() +
-                "\n Stufe Versteck:                         " + optimalesDorf.getVersteck().getStufe() +
-                "\n Stufe Wall:                             " + optimalesDorf.getWall().getStufe() +
+                "\n Speicherinhalt:                         " + (optimalesDorf.getSpeicher()).getRohstoffvorrat() +
+                "\n verlorene Rohstoffe:                    " + (optimalesDorf.getSpeicher()).getUebergelaufeneRohstoffe() +
+                "\n Stufe Hauptgebaeude:                    " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(HAUPTGEBAEUDE) - 1] +
+                "\n Stufe Kaserne:                          " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(KASERNE) - 1] +
+                "\n Stufe Stall:                            " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(STALL) - 1] +
+                "\n Stufe Werkstatt:                        " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(WERKSTATT) - 1] +
+                "\n Stufe Adelshof:                         " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(ADELSHOF) - 1] +
+                "\n Stufe Schmiede:                         " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(SCHMIEDE) - 1] +
+                "\n Stufe Versammlungsplatz:                " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(VERSAMMLUNGSPLATZ) - 1] +
+                "\n Stufe Statue:                           " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(STATUE) - 1] +
+                "\n Stufe Marktplatz:                       " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(MARKTPLATZ) - 1] +
+                "\n Stufe Holzfaeller:                      " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(HOLZFAELLER) - 1] +
+                "\n Stufe Lehmgrube:                        " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(LEHMGRUBE) - 1] +
+                "\n Stufe Eisenmine:                        " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(EISENMINE) - 1] +
+                "\n Stufe Bauernhof:                        " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(BAUERNHOF) - 1] +
+                "\n Stufe Speicher:                         " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(SPEICHER) - 1] +
+                "\n Stufe Versteck:                         " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(VERSTECK) - 1] +
+                "\n Stufe Wall:                             " + optimalesDorf.getGebaeudeStufen()[gebaeudeDaten.getId(WALL) - 1] +
                 "\n Gebäudestufen gesamt:                   " + Arrays.toString(optimalesDorf.getGebaeudeStufen()) +
                 "\n Ausgebaute Gebäude:                     " + optimalesDorf.getAusgebauteGebaeude() +
                 "\n Bauzeit (in h):                         " + optimalesDorf.getBisherigeBauzeit();

@@ -5,28 +5,23 @@ import gebaeude.gebaeudeSonderfunktion.Speicher;
 
 public class Simulator {
 
-    public SimErgebnis nachStufenAusbauen(Dorf dorf, int[] gebaeudeStufen, int anzahlVersuche) {
+    public SimErgebnis nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche, boolean belohnungAktiv) {
         Dorf dorfFuerAusbau;
         Dorf optimalesDorf = null;
-        SimErgebnis simErgebnis = new SimErgebnis(anzahlVersuche, 0, dorf, 0);
+
         double minBauzeit = Double.MAX_VALUE;
         double bauzeit;
         final long timeStart = System.currentTimeMillis();
         for (int i = 0; i < anzahlVersuche; i++) {
-            dorfFuerAusbau = dorf.dorfKopierenSpeicherZuruecksetzen(new Speicher(dorf.getSpeicher().getStufe()));
-            bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufen);
+            dorfFuerAusbau = new Dorf("Dorf " + (i + 1), belohnungAktiv, gebaeudeStufenAusbaustart, speicher);
+            bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufenAusbauziel);
             System.out.println("Durchläufe im Simulator: " + i);
             if (bauzeit < minBauzeit) {
                 minBauzeit = bauzeit;
                 optimalesDorf = dorfFuerAusbau;
-                simErgebnis.setDurchlaeufMitOptimalemDorf(i + 1);
-
             }
         }
         final long timeStop = System.currentTimeMillis();
-
-        simErgebnis.setLaufzeit(timeStop - timeStart);
-        simErgebnis.setOptimalesDorf(optimalesDorf);
-        return simErgebnis;
+        return new SimErgebnis(anzahlVersuche, optimalesDorf, timeStop - timeStart);
     }
 }
