@@ -91,21 +91,21 @@ public class Dorf {
     public double gebaeudeAusbauen(GebaeudeTypen gebaeudeTyp) {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
         double verbleibendeZeit = 0;
-        
+
         int neueStufe = gebaeudeStufen[gebaeudeTyp.getId() - 1] + 1;
-        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);   
-        
+        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);
+
         int baukostenHolz = baukosten.getHolz();
         int baukostenLehm = baukosten.getLehm();
         int baukostenEisen = baukosten.getEisen();
-        int speicherHolzvorrat =  speicher.getHolzvorrat();
+        int speicherHolzvorrat = speicher.getHolzvorrat();
         int speicherLehmvorrat = speicher.getLehmvorrat();
         int speicherEisenvorrat = speicher.getEisenvorrat();
-       
+
         if (!speicher.passenBaukostenInSpeicher(gebaeudeTyp, neueStufe)) {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeudeTyp, neueStufe);
         }
-        
+
         if (baukostenHolz > speicherHolzvorrat) {
             fehlendeRohstoffe.setHolz(baukostenHolz - speicherHolzvorrat);
         } else {
@@ -124,7 +124,7 @@ public class Dorf {
             fehlendeRohstoffe.setEisen(0);
         }
 
-        //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
+        //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind, wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
         double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktionHolz();
         double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktionLehm();
         double verbleibendeZeitEisen = fehlendeRohstoffe.getEisen() / (double) getProduktionEisen();
@@ -132,12 +132,15 @@ public class Dorf {
 
         //Inhalt des Speichers wird entsprechend aktualisiert. Dabei werden die in der Wartezeit erzeugten Rohstoffe eingelagert,
         //aber gleichzeitig die Baukosten des Gebaeudes direkt wieder abgezogen
-        speicher.addHolz(((int) Math.ceil(verbleibendeZeit * getProduktionHolz())) - baukostenHolz);
-        speicher.addLehm(((int) Math.ceil(verbleibendeZeit * getProduktionLehm())) - baukostenLehm);
-        speicher.addEisen(((int) Math.ceil(verbleibendeZeit * getProduktionEisen())) - baukostenEisen);
+        speicher.addHolz((int) Math.ceil(verbleibendeZeit * getProduktionHolz()));
+        speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktionLehm()));
+        speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktionEisen()));
+        speicher.addHolz(-baukostenHolz);
+        speicher.addLehm(-baukostenLehm);
+        speicher.addEisen(-baukostenEisen);
 
         //Rohstoffe für den abgeschlossenen Bau werden hinzugefuegt (falls Belohnungen aktiv sind) und die Stufe des Gebaeudes erhoeht
-        gebaeudeStufen[id - 1] += 1;
+        gebaeudeStufen[gebaeudeTyp.getId() - 1] += 1;
         if (gebaeudeTyp == SPEICHER) {
             speicher.setStufe(neueStufe);
         }
@@ -226,10 +229,6 @@ public class Dorf {
         return gebaeudeStufen;
     }
 
-    public GebaeudeDaten getGebaeudeDaten() {
-        return gebaeudeDaten;
-    }
-
     public List<GebaeudeTypen> getAusgebauteGebaeude() {
         return ausgebauteGebaeude;
     }
@@ -254,7 +253,7 @@ public class Dorf {
                 "\n Stufe Bauernhof:        " + gebaeudeStufen[BAUERNHOF.getId() - 1] +
                 "\n Stufe Speicher:         " + gebaeudeStufen[SPEICHER.getId() - 1] +
                 "\n Stufe Versteck:         " + gebaeudeStufen[VERSTECK.getId() - 1] +
-                "\n Stufe Wall:             " + gebaeudeStufen[WALL).getId( - 1] +
+                "\n Stufe Wall:             " + gebaeudeStufen[WALL.getId() - 1] +
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;

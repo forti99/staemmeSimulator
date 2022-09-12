@@ -13,9 +13,9 @@ public class Einstellungen {
         Rohstoffe baukosten = new GebaeudeDaten().getBaukosten(gebaeudeTyp, stufe);
         Rohstoffe belohnung = new Rohstoffe();
 
-        belohnung.setHolz(Math.min(2000, Math.max(150,(int) (baukosten.getHolz() * 0.1))));
-        belohnung.setLehm(Math.min(2000, Math.max(150,(int) (baukosten.getLehm() * 0.1))));
-        belohnung.setEisen(Math.min(2000, Math.max(100,(int) (baukosten.getEisen() * 0.1))));
+        belohnung.setHolz(Math.min(2000, Math.max(150, (int) (baukosten.getHolz() * 0.1))));
+        belohnung.setLehm(Math.min(2000, Math.max(150, (int) (baukosten.getLehm() * 0.1))));
+        belohnung.setEisen(Math.min(2000, Math.max(100, (int) (baukosten.getEisen() * 0.1))));
 
         return belohnung;
     }

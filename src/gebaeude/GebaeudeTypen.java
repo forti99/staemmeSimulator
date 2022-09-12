@@ -1,7 +1,7 @@
 package gebaeude;
 
 public enum GebaeudeTypen {
-    HAUPTGEBAEUDE(1, 30), 
+    HAUPTGEBAEUDE(1, 30),
     KASERNE(2, 25),
     STALL(3, 20),
     WERKSTATT(4, 15),
@@ -17,30 +17,29 @@ public enum GebaeudeTypen {
     SPEICHER(14, 30),
     VERSTECK(15, 10),
     WALL(16, 20);
-        
+
     private final int id;
     private final int maxStufe;
-    
-    private GebaeudeTypen(int id, int maxStufe){
+
+    GebaeudeTypen(int id, int maxStufe) {
         this.id = id;
-        this.maxStufe = maStufe;
+        this.maxStufe = maxStufe;
     }
-    
-    public static int getId(){
+
+    public int getId() {
         return id;
     }
-    
-    public static int getMaxStufe(){
-       return maxStufe; 
+
+    public int getMaxStufe() {
+        return maxStufe;
     }
-    
-    public static GebaeudeTypen getById(int id){
-        for (GebaeudeTypen e : values()){
-            if(e.id == id){
-                return e;   
-            }else{
-                return  new IllegalArgumentException("Ungueltige Id bei den GebaeudeTypen");
+
+    public static GebaeudeTypen getById(int id) {
+        for (GebaeudeTypen e : values()) {
+            if (e.id == id) {
+                return e;
             }
         }
-    } 
+        throw new IllegalArgumentException("Ungueltige Id bei den GebaeudeTypen");
+    }
 }

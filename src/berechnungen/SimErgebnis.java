@@ -1,7 +1,5 @@
 package berechnungen;
 
-import gebaeude.GebaeudeDaten;
-
 import java.util.Arrays;
 
 import static gebaeude.GebaeudeTypen.*;
@@ -19,8 +17,8 @@ public class SimErgebnis {
 
     @Override
     public String toString() {
-        int gebaeudeStufen = optimalesDorf.getGebaeudeStufen();
-        
+        int[] gebaeudeStufen = optimalesDorf.getGebaeudeStufen();
+
         return "\n Anzahl Durchläufe:                      " + durchlaeufe +
                 "\n Durchlaufzeit (in ms):                  " + laufzeit +
                 "\n Laufzeit pro Dorfberechnung (in ms):    " + laufzeit / (float) durchlaeufe +

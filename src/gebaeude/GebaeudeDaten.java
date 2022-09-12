@@ -2,8 +2,6 @@ package gebaeude;
 
 import berechnungen.Rohstoffe;
 
-import static gebaeude.GebaeudeTypen.*;
-
 public class GebaeudeDaten {
     private final Rohstoffe[] bkAdelshof = new Rohstoffe[1], bkBauernhof = new Rohstoffe[30], bkEisenmine = new Rohstoffe[30], bkHauptgebaeude = new Rohstoffe[30],
             bkHolzfaeller = new Rohstoffe[30], bkKaserne = new Rohstoffe[25], bkLehmgrube = new Rohstoffe[30], bkMarktplatz = new Rohstoffe[25],
@@ -87,7 +85,7 @@ public class GebaeudeDaten {
                 default -> throw new IllegalArgumentException("Falscher Gebaeudetyp bei Baukostenabruf uebergeben!");
             }
         }
-    }   
+    }
 
     public int[] getGebaeudeVoraussetzung(GebaeudeTypen gebaeudeTyp) {
         switch (gebaeudeTyp) {

@@ -10,7 +10,7 @@ public class Main {
         int[] ausbaustart = new int[]{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, speicher.getStufe(), 0, 0};
         int[] ausbauziel = new int[]{22, 25, 20, 15, 1, 20, 1, 1, 17, 30, 30, 30, 30, 30, 0, 20};
 
-        int anzahlVersuche = 10000;
+        int anzahlVersuche = 1000;
         boolean belohnungAktiv = true;
 
         SimErgebnis simErgebnis = simulator.nachStufenAusbauen(ausbaustart, ausbauziel, speicher, anzahlVersuche, belohnungAktiv);
