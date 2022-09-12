@@ -19,16 +19,16 @@ public class Speicher {
         rohstoffvorrat.setLehm(lehmvorrat);
         rohstoffvorrat.setEisen(eisenvorrat);
 
-        setBaukostenAndKapazitaet();
+        setKapazitaet();
     }
 
     public Speicher(int stufe) {
         this.stufe = stufe;
         gebaeudeDaten = new GebaeudeDaten();
-        setBaukostenAndKapazitaet();
+        setKapazitaet();
     }
 
-    private void setBaukostenAndKapazitaet() {
+    private void setKapazitaet() {
         kapazitaet[0] = 1000;
         kapazitaet[1] = 1229;
         kapazitaet[2] = 1512;
@@ -144,7 +144,6 @@ public class Speicher {
     public Rohstoffe getUebergelaufeneRohstoffe() {
         return uebergelaufeneRohstoffe;
     }
-
 
     public int getStufe() {
         return stufe;
