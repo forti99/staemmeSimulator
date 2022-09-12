@@ -19,7 +19,6 @@ public enum GebaeudeTypen {
     WALL(16, 20);
         
     private final int id;
-    
     private final int maxStufe;
     
     private GebaeudeTypen(int id, int maxStufe){
