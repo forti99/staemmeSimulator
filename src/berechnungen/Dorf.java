@@ -58,7 +58,7 @@ public class Dorf {
         int i = 0;
         for (int gebaeudeStufe : gebaeudeStufen) {
             if (gebaeudeStufe < vorgabeGebaeudeStufen[i]) {
-                gebaeudeIds.add(gebaeudeDaten.getGebaeudeTyp(i + 1));
+                gebaeudeIds.add(GebaeudeTypen.getById(i + 1));
             }
             i++;
         }
