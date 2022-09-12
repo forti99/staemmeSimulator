@@ -48,7 +48,7 @@ public class Dorf implements Comparable {
     }
 
     /**
-     * Ermittelt die Gebaeudetypen die noch entsprechende der Vorgabe ausgebaut werden muessen
+     * Ermittelt die Gebaeudetypen die noch entsprechend der Vorgabe ausgebaut werden muessen
      *
      * @param vorgabeGebaeudeStufen Vorgabe, welche Gebaeudestufe jeweils im Dorf vorhanden sein sollen
      * @return Liste der Gebauedetypen die jeweils noch ausgebaut werden muessen
@@ -85,83 +85,15 @@ public class Dorf implements Comparable {
      * Baut ein Gebaeude um eine Stufe aus. Sollten die noetigen Rohstoffe nicht in den Speicher passen, wird dieser vorher ausgebaut. Es wird dann gewartet bis genuegend Rohstoffe im Speicher vorhanden sind.
      * Dann werden die Baukosten (+ Kosten des Speichers) von den vorhandenen Rohstoffen abgezogen und dann die Stufe des entsprechende Gebaeudes erhoeht
      *
-     * @param gebaeudeTyp Id des Gebaeudes das ausgebaut werden soll
+     * @param gebaeudeTyp Typ des Gebaeudes das ausgebaut werden soll
      * @return Zeit, die gewartet werden muss, bis das Gebaeude gebaut werden kann
      */
     public double gebaeudeAusbauen(GebaeudeTypen gebaeudeTyp) {
-        int neueStufe;
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
         double verbleibendeZeit = 0;
-        int id;
-        switch (gebaeudeTyp) {
-            case HAUPTGEBAEUDE -> {
-                id = gebaeudeDaten.getId(HAUPTGEBAEUDE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case KASERNE -> {
-                id = gebaeudeDaten.getId(KASERNE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case STALL -> {
-                id = gebaeudeDaten.getId(STALL);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case WERKSTATT -> {
-                id = gebaeudeDaten.getId(WERKSTATT);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case ADELSHOF -> {
-                id = gebaeudeDaten.getId(ADELSHOF);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case SCHMIEDE -> {
-                id = gebaeudeDaten.getId(SCHMIEDE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case VERSAMMLUNGSPLATZ -> {
-                id = gebaeudeDaten.getId(VERSAMMLUNGSPLATZ);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case STATUE -> {
-                id = gebaeudeDaten.getId(STATUE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case MARKTPLATZ -> {
-                id = gebaeudeDaten.getId(MARKTPLATZ);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case HOLZFAELLER -> {
-                id = gebaeudeDaten.getId(HOLZFAELLER);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case LEHMGRUBE -> {
-                id = gebaeudeDaten.getId(LEHMGRUBE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case EISENMINE -> {
-                id = gebaeudeDaten.getId(EISENMINE);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case BAUERNHOF -> {
-                id = gebaeudeDaten.getId(BAUERNHOF);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case SPEICHER -> {
-                id = gebaeudeDaten.getId(SPEICHER);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case VERSTECK -> {
-                id = gebaeudeDaten.getId(VERSTECK);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            case WALL -> {
-                id = gebaeudeDaten.getId(WALL);
-                neueStufe = gebaeudeStufen[id - 1] + 1;
-            }
-            default -> throw new IllegalArgumentException("Falscher Gebaeudetyp beim Gebaeudeausbau übergeben!");
-
-        }
-
+        
+        int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
+      
         if (!speicher.passenBaukostenInSpeicher(gebaeudeTyp, neueStufe)) {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeudeTyp, neueStufe);
         }
