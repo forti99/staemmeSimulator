@@ -74,7 +74,7 @@ public class Dorf {
         List<GebaeudeTypen> gebaeudeTypen = new ArrayList<>();
 
         for (GebaeudeTypen gebaeudeTyp : GebaeudeTypen.values()) {
-            if (gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] < gebaeudeDaten.getMaxGebaeudeStufe(gebaeudeTyp) && speicher.passenBaukostenInSpeicher(gebaeudeTyp, gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1]) && voraussetzungErfuellt(gebaeudeTyp)) {
+            if (gebaeudeStufen[gebaeudeTyp.getId() - 1] < gebaeudeTyp.getMaxStufe() && speicher.passenBaukostenInSpeicher(gebaeudeTyp, gebaeudeStufen[gebaeudeTyp.getId() - 1]) && voraussetzungErfuellt(gebaeudeTyp)) {
                 gebaeudeTypen.add(gebaeudeTyp);
             }
         }
@@ -92,7 +92,7 @@ public class Dorf {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
         double verbleibendeZeit = 0;
         
-        int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
+        int neueStufe = gebaeudeStufen[gebaeudeTyp.getId() - 1] + 1;
         Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);   
         
         int baukostenHolz = baukosten.getHolz();
@@ -195,15 +195,15 @@ public class Dorf {
     }
 
     public int getProduktionHolz() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[gebaeudeDaten.getId(HOLZFAELLER) - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[HOLZFAELLER.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public int getProduktionLehm() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[gebaeudeDaten.getId(LEHMGRUBE) - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[LEHMGRUBE.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public int getProduktionEisen() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[gebaeudeDaten.getId(EISENMINE) - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[EISENMINE.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public Speicher getSpeicher() {
@@ -239,22 +239,22 @@ public class Dorf {
         return "\n Dorfname:               " + name +
                 "\n Speicherinhalt:         " + (getSpeicher()).getRohstoffvorrat() +
                 "\n verlorene Rohstoffe:    " + (getSpeicher()).getUebergelaufeneRohstoffe() +
-                "\n Stufe Hauptgebaeude:    " + gebaeudeStufen[gebaeudeDaten.getId(HAUPTGEBAEUDE) - 1] +
-                "\n Stufe Kaserne:          " + gebaeudeStufen[gebaeudeDaten.getId(KASERNE) - 1] +
-                "\n Stufe Stall:            " + gebaeudeStufen[gebaeudeDaten.getId(STALL) - 1] +
-                "\n Stufe Werkstatt:        " + gebaeudeStufen[gebaeudeDaten.getId(WERKSTATT) - 1] +
-                "\n Stufe Adelshof:         " + gebaeudeStufen[gebaeudeDaten.getId(ADELSHOF) - 1] +
-                "\n Stufe Schmiede:         " + gebaeudeStufen[gebaeudeDaten.getId(SCHMIEDE) - 1] +
-                "\n Stufe Versammlungsplatz:" + gebaeudeStufen[gebaeudeDaten.getId(VERSAMMLUNGSPLATZ) - 1] +
-                "\n Stufe Statue:           " + gebaeudeStufen[gebaeudeDaten.getId(STATUE) - 1] +
-                "\n Stufe Marktplatz:       " + gebaeudeStufen[gebaeudeDaten.getId(MARKTPLATZ) - 1] +
-                "\n Stufe Holzfaeller:      " + gebaeudeStufen[gebaeudeDaten.getId(HOLZFAELLER) - 1] +
-                "\n Stufe Lehmgrube:        " + gebaeudeStufen[gebaeudeDaten.getId(LEHMGRUBE) - 1] +
-                "\n Stufe Eisenmine:        " + gebaeudeStufen[gebaeudeDaten.getId(EISENMINE) - 1] +
-                "\n Stufe Bauernhof:        " + gebaeudeStufen[gebaeudeDaten.getId(BAUERNHOF) - 1] +
-                "\n Stufe Speicher:         " + gebaeudeStufen[gebaeudeDaten.getId(SPEICHER) - 1] +
-                "\n Stufe Versteck:         " + gebaeudeStufen[gebaeudeDaten.getId(VERSTECK) - 1] +
-                "\n Stufe Wall:             " + gebaeudeStufen[gebaeudeDaten.getId(WALL) - 1] +
+                "\n Stufe Hauptgebaeude:    " + gebaeudeStufen[HAUPTGEBAEUDE.getId() - 1] +
+                "\n Stufe Kaserne:          " + gebaeudeStufen[KASERNE.getId() - 1] +
+                "\n Stufe Stall:            " + gebaeudeStufen[STALL.getId() - 1] +
+                "\n Stufe Werkstatt:        " + gebaeudeStufen[WERKSTATT.getId() - 1] +
+                "\n Stufe Adelshof:         " + gebaeudeStufen[ADELSHOF.getId() - 1] +
+                "\n Stufe Schmiede:         " + gebaeudeStufen[SCHMIEDE.getId() - 1] +
+                "\n Stufe Versammlungsplatz:" + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId() - 1] +
+                "\n Stufe Statue:           " + gebaeudeStufen[STATUE.getId() - 1] +
+                "\n Stufe Marktplatz:       " + gebaeudeStufen[MARKTPLATZ.getId() - 1] +
+                "\n Stufe Holzfaeller:      " + gebaeudeStufen[HOLZFAELLER.getId() - 1] +
+                "\n Stufe Lehmgrube:        " + gebaeudeStufen[LEHMGRUBE.getId() - 1] +
+                "\n Stufe Eisenmine:        " + gebaeudeStufen[EISENMINE.getId() - 1] +
+                "\n Stufe Bauernhof:        " + gebaeudeStufen[BAUERNHOF.getId() - 1] +
+                "\n Stufe Speicher:         " + gebaeudeStufen[SPEICHER.getId() - 1] +
+                "\n Stufe Versteck:         " + gebaeudeStufen[VERSTECK.getId() - 1] +
+                "\n Stufe Wall:             " + gebaeudeStufen[WALL).getId( - 1] +
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;
