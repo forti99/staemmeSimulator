@@ -12,7 +12,7 @@ import java.util.Random;
 
 import static gebaeude.GebaeudeTypen.*;
 
-public class Dorf implements Comparable {
+public class Dorf {
 
     private final String name;
     private double bisherigeBauzeit = 0;
@@ -252,21 +252,5 @@ public class Dorf implements Comparable {
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        Dorf dorf2 = (Dorf) o;
-        double diff = this.bisherigeBauzeit - dorf2.bisherigeBauzeit;
-
-        if (diff == 0) {
-            return 0;
-        } else {
-            if (diff < 0) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
     }
 }
