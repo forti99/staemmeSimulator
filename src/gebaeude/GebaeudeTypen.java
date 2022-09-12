@@ -26,11 +26,21 @@ public enum GebaeudeTypen {
         this.maxStufe = maStufe;
     }
     
-    public int getId(){
+    public static int getId(){
         return id;
     }
     
-    public int getMaxStufe(){
+    public static int getMaxStufe(){
        return maxStufe; 
     }
+    
+    public static GebaeudeTypen getById(int id){
+        for (GebaeudeTypen e : values()){
+            if(e.id == id){
+                return e;   
+            }else{
+                return  new IllegalArgumentException("Ungueltige Id bei den GebaeudeTypen");
+            }
+        }
+    } 
 }
