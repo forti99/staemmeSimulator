@@ -89,61 +89,6 @@ public class GebaeudeDaten {
         }
     }   
 
-    public GebaeudeTypen getGebaeudeTyp(int id) {
-        switch (id) {
-            case 1 -> {
-                return HAUPTGEBAEUDE;
-            }
-            case 2 -> {
-                return KASERNE;
-            }
-            case 3 -> {
-                return STALL;
-            }
-            case 4 -> {
-                return WERKSTATT;
-            }
-            case 5 -> {
-                return ADELSHOF;
-            }
-            case 6 -> {
-                return SCHMIEDE;
-            }
-            case 7 -> {
-                return VERSAMMLUNGSPLATZ;
-            }
-            case 8 -> {
-                return STATUE;
-            }
-            case 9 -> {
-                return MARKTPLATZ;
-            }
-            case 10 -> {
-                return HOLZFAELLER;
-            }
-            case 11 -> {
-                return LEHMGRUBE;
-            }
-            case 12 -> {
-                return EISENMINE;
-            }
-            case 13 -> {
-                return BAUERNHOF;
-            }
-            case 14 -> {
-                return SPEICHER;
-            }
-            case 15 -> {
-                return VERSTECK;
-            }
-            case 16 -> {
-                return WALL;
-            }
-            default -> throw new IllegalArgumentException("Ungültige ID  bei Typenabruf uebergeben!");
-
-        }
-    }
-
     public int[] getGebaeudeVoraussetzung(GebaeudeTypen gebaeudeTyp) {
         switch (gebaeudeTyp) {
             case HAUPTGEBAEUDE, VERSAMMLUNGSPLATZ, STATUE, HOLZFAELLER, LEHMGRUBE, EISENMINE, BAUERNHOF, SPEICHER, VERSTECK -> {
