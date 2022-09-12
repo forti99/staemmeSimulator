@@ -1,9 +1,7 @@
 package berechnungen;
 
 public class Rohstoffe {
-    private int holz;
-    private int lehm;
-    private int eisen;
+    private int holz, lehm, eisen;
 
     public Rohstoffe() {
         this.holz = 0;
