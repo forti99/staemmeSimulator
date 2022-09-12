@@ -9,7 +9,7 @@ public class Speicher {
     private int stufe;
     private final GebaeudeDaten gebaeudeDaten;
     private final int[] kapazitaet = new int[30];
-    private final Rohstoffe rohstoffvorrat = new Rohstoffe(0, 0, 0); //Bei Weltenstart startet man mit den initialisierten Rohstoffen
+    private final Rohstoffe rohstoffvorrat = new Rohstoffe(0, 0, 0);
     private final Rohstoffe uebergelaufeneRohstoffe = new Rohstoffe(0, 0, 0);
 
     public Speicher(int stufe, int holzvorrat, int lehmvorrat, int eisenvorrat) {
@@ -62,10 +62,8 @@ public class Speicher {
     }
 
     public boolean passenBaukostenInSpeicher(GebaeudeTypen gebaeudeTyp, int stufe) {
-        int holzkosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, stufe).getHolz();
-        int lehmkosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, stufe).getLehm();
-        int eisenkosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, stufe).getEisen();
-        int hoechsteKosten = Math.max(Math.max(holzkosten, lehmkosten), eisenkosten);
+        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, stufe);
+        int hoechsteKosten = Math.max(Math.max(baukosten.getHolz(), baukosten.getLehm()), baukosten.getEisen());
 
         return getKapazitaet() >= hoechsteKosten;
     }
@@ -76,6 +74,7 @@ public class Speicher {
         addEisen(rohstoffe.getEisen());
     }
 
+    //Fuegt eine gewisse Menge Holz zum Speicherinhalt hinzu. Sollte die Menge nicht ganz in den Speicher passen, wird der bisherige "Ueberlauf" an Rohstoffen erhoeht.
     public void addHolz(int menge) {
         rohstoffvorrat.addHolz(menge);
         if (getHolzvorrat() > kapazitaet[stufe - 1]) {
@@ -87,6 +86,7 @@ public class Speicher {
         }
     }
 
+    //Fuegt eine gewisse Menge Lehm zum Speicherinhalt hinzu. Sollte die Menge nicht ganz in den Speicher passen, wird der bisherige "Ueberlauf" an Rohstoffen erhoeht.
     public void addLehm(int menge) {
         rohstoffvorrat.addLehm(menge);
         if (getLehmvorrat() > kapazitaet[stufe - 1]) {
@@ -98,6 +98,7 @@ public class Speicher {
         }
     }
 
+    //Fuegt eine gewisse Menge Eisen zum Speicherinhalt hinzu. Sollte die Menge nicht ganz in den Speicher passen, wird der bisherige "Ueberlauf" an Rohstoffen erhoeht.
     public void addEisen(int menge) {
         rohstoffvorrat.addEisen(menge);
         if (getEisenvorrat() > kapazitaet[stufe - 1]) {
