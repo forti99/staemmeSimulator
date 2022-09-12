@@ -90,45 +90,51 @@ public class Dorf {
      */
     public double gebaeudeAusbauen(GebaeudeTypen gebaeudeTyp) {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
-          double verbleibendeZeit = 0;
+        double verbleibendeZeit = 0;
         
-         int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
-        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);      
+        int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
+        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);   
+        
+        int baukostenHolz = baukosten.getHolz();
+        int baukostenLehm = baukosten.getLehm();
+        int baukostenEisen = baukosten.getEisen();
+        int speicherHolzvorrat =  speicher.getHolzvorrat();
+        int speicherLehmvorrat = speicher.getLehmvorrat();
+        int speicherEisenvorrat = speicher.getEisenvorrat();
        
         if (!speicher.passenBaukostenInSpeicher(gebaeudeTyp, neueStufe)) {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeudeTyp, neueStufe);
         }
         
-        if (baukosten.getHolz() > speicher.getHolzvorrat()) {
-            fehlendeRohstoffe.setHolz(baukosten.getHolz() - speicher.getHolzvorrat());
+        if (baukostenHolz > speicherHolzvorrat) {
+            fehlendeRohstoffe.setHolz(baukostenHolz - speicherHolzvorrat);
         } else {
             fehlendeRohstoffe.setHolz(0);
         }
 
-        if (baukosten.getLehm() > speicher.getLehmvorrat()) {
-            fehlendeRohstoffe.setLehm(baukosten.getLehm() - speicher.getLehmvorrat());
+        if (baukostenLehm > speicherLehmvorrat) {
+            fehlendeRohstoffe.setLehm(baukostenLehm - speicherLehmvorrat);
         } else {
             fehlendeRohstoffe.setLehm(0);
         }
 
-        if (baukosten.getEisen() > speicher.getEisenvorrat()) {
-            fehlendeRohstoffe.setEisen(baukosten.getEisen() - speicher.getEisenvorrat());
+        if (baukostenEisen > speicherEisenvorrat) {
+            fehlendeRohstoffe.setEisen(baukostenEisen - speicherEisenvorrat);
         } else {
             fehlendeRohstoffe.setEisen(0);
         }
 
+        //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
         double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktionHolz();
         double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktionLehm();
         double verbleibendeZeitEisen = fehlendeRohstoffe.getEisen() / (double) getProduktionEisen();
         verbleibendeZeit += Math.max(Math.max(verbleibendeZeitHolz, verbleibendeZeitLehm), verbleibendeZeitEisen);
 
-        speicher.addHolz((int) Math.ceil(verbleibendeZeit * getProduktionHolz()));
-        speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktionLehm()));
-        speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktionEisen()));
-
-        speicher.addHolz(-baukosten.getHolz());
-        speicher.addLehm(-baukosten.getLehm());
-        speicher.addEisen(-baukosten.getEisen());
+        //Inhalt des Speichers wird entsprechend aktualisiert. Dabei werden die in der Wartezeit erzeugten Rohstoffe eingelagert,
+        //aber gleichzeitig die Baukosten des Gebaeudes direkt wieder abgezogen
+        speicher.addHolz(((int) Math.ceil(verbleibendeZeit * getProduktionHolz())) - baukostenHolz);
+        speicher.addLehm(((int) Math.ceil(verbleibendeZeit * getProduktionLehm())) - baukostenLehm);
+        speicher.addEisen(((int) Math.ceil(verbleibendeZeit * getProduktionEisen())) - baukostenEisen);
 
         //Rohstoffe für den abgeschlossenen Bau werden hinzugefuegt (falls Belohnungen aktiv sind) und die Stufe des Gebaeudes erhoeht
         gebaeudeStufen[id - 1] += 1;
