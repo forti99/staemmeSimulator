@@ -87,61 +87,7 @@ public class GebaeudeDaten {
                 default -> throw new IllegalArgumentException("Falscher Gebaeudetyp bei Baukostenabruf uebergeben!");
             }
         }
-    }
-
-    public int getId(GebaeudeTypen gebaeudeTyp) {
-        switch (gebaeudeTyp) {
-            case HAUPTGEBAEUDE -> {
-                return 1;
-            }
-            case KASERNE -> {
-                return 2;
-            }
-            case STALL -> {
-                return 3;
-            }
-            case WERKSTATT -> {
-                return 4;
-            }
-            case ADELSHOF -> {
-                return 5;
-            }
-            case SCHMIEDE -> {
-                return 6;
-            }
-            case VERSAMMLUNGSPLATZ -> {
-                return 7;
-            }
-            case STATUE -> {
-                return 8;
-            }
-            case MARKTPLATZ -> {
-                return 9;
-            }
-            case HOLZFAELLER -> {
-                return 10;
-            }
-            case LEHMGRUBE -> {
-                return 11;
-            }
-            case EISENMINE -> {
-                return 12;
-            }
-            case BAUERNHOF -> {
-                return 13;
-            }
-            case SPEICHER -> {
-                return 14;
-            }
-            case VERSTECK -> {
-                return 15;
-            }
-            case WALL -> {
-                return 16;
-            }
-            default -> throw new IllegalArgumentException("Falscher Gebaeudetyp bei ID-Abruf uebergeben!");
-        }
-    }
+    }   
 
     public GebaeudeTypen getGebaeudeTyp(int id) {
         switch (id) {
@@ -195,30 +141,6 @@ public class GebaeudeDaten {
             }
             default -> throw new IllegalArgumentException("Ungültige ID  bei Typenabruf uebergeben!");
 
-        }
-    }
-
-    public int getMaxGebaeudeStufe(GebaeudeTypen gebaeudeTyp) {
-        switch (gebaeudeTyp) {
-            case HAUPTGEBAEUDE, HOLZFAELLER, LEHMGRUBE, EISENMINE, BAUERNHOF, SPEICHER -> {
-                return 30;
-            }
-            case KASERNE, MARKTPLATZ -> {
-                return 25;
-            }
-            case STALL, SCHMIEDE, WALL -> {
-                return 20;
-            }
-            case WERKSTATT -> {
-                return 15;
-            }
-            case VERSTECK -> {
-                return 10;
-            }
-            case ADELSHOF, VERSAMMLUNGSPLATZ, STATUE -> {
-                return 1;
-            }
-            default -> throw new IllegalArgumentException("Ungültiger Gebaeudetyp  bei Abruf der maximalen Stufe uebergeben!");
         }
     }
 
