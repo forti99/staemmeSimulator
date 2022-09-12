@@ -90,32 +90,32 @@ public class Dorf {
      */
     public double gebaeudeAusbauen(GebaeudeTypen gebaeudeTyp) {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
-        double verbleibendeZeit = 0;
+          double verbleibendeZeit = 0;
         
-        int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
-      
+         int neueStufe = gebaeudeStufen[gebaeudeDaten.getId(gebaeudeTyp) - 1] + 1;
+        Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);      
+       
         if (!speicher.passenBaukostenInSpeicher(gebaeudeTyp, neueStufe)) {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeudeTyp, neueStufe);
         }
-
-        if (gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getHolz() > speicher.getHolzvorrat()) {
-            fehlendeRohstoffe.setHolz(gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getHolz() - speicher.getHolzvorrat());
+        
+        if (baukosten.getHolz() > speicher.getHolzvorrat()) {
+            fehlendeRohstoffe.setHolz(baukosten.getHolz() - speicher.getHolzvorrat());
         } else {
             fehlendeRohstoffe.setHolz(0);
         }
 
-        if (gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getLehm() > speicher.getLehmvorrat()) {
-            fehlendeRohstoffe.setLehm(gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getLehm() - speicher.getLehmvorrat());
+        if (baukosten.getLehm() > speicher.getLehmvorrat()) {
+            fehlendeRohstoffe.setLehm(baukosten.getLehm() - speicher.getLehmvorrat());
         } else {
             fehlendeRohstoffe.setLehm(0);
         }
 
-        if (gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getEisen() > speicher.getEisenvorrat()) {
-            fehlendeRohstoffe.setEisen(gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getEisen() - speicher.getEisenvorrat());
+        if (baukosten.getEisen() > speicher.getEisenvorrat()) {
+            fehlendeRohstoffe.setEisen(baukosten.getEisen() - speicher.getEisenvorrat());
         } else {
             fehlendeRohstoffe.setEisen(0);
         }
-
 
         double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktionHolz();
         double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktionLehm();
@@ -126,9 +126,9 @@ public class Dorf {
         speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktionLehm()));
         speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktionEisen()));
 
-        speicher.addHolz(-gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getHolz());
-        speicher.addLehm(-gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getLehm());
-        speicher.addEisen(-gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe).getEisen());
+        speicher.addHolz(-baukosten.getHolz());
+        speicher.addLehm(-baukosten.getLehm());
+        speicher.addEisen(-baukosten.getEisen());
 
         //Rohstoffe für den abgeschlossenen Bau werden hinzugefuegt (falls Belohnungen aktiv sind) und die Stufe des Gebaeudes erhoeht
         gebaeudeStufen[id - 1] += 1;
