@@ -1,2 +1,2 @@
 # staemmeSimulator
-Simulator for the Browser Game "Die Stämme" - "Triabal Wars"
+Simulator for the Browser Game "Die Stämme - Tribal Wars"
