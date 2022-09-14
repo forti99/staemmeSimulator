@@ -13,7 +13,7 @@ public class Main {
         int anzahlVersuche = 1000;
         boolean belohnungAktiv = true;
 
-        SimErgebnis simErgebnis = simulator.nachStufenAusbauen(ausbaustart, ausbauziel, speicher, anzahlVersuche, belohnungAktiv);
+        SimErgebnis simErgebnis = simulator.nachStufenAusbauen(ausbaustart, ausbauziel, speicher, anzahlVersuche);
         System.out.println(simErgebnis);
     }
 }
