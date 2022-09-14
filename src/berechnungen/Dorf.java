@@ -56,7 +56,7 @@ public class Dorf {
         int i = 0;
         for (int gebaeudeStufe : gebaeudeStufen) {
             if (gebaeudeStufe < vorgabeGebaeudeStufen[i]) {
-                gebaeudeIds.add(GebaeudeTypen.getById(i + 1));
+                gebaeudeIds.add(GebaeudeTypen.getById(i));
             }
             i++;
         }
@@ -72,7 +72,7 @@ public class Dorf {
         List<GebaeudeTypen> gebaeudeTypen = new ArrayList<>();
 
         for (GebaeudeTypen gebaeudeTyp : GebaeudeTypen.values()) {
-            if (gebaeudeStufen[gebaeudeTyp.getId() - 1] < gebaeudeTyp.getMaxStufe() && speicher.passenBaukostenInSpeicher(gebaeudeTyp, gebaeudeStufen[gebaeudeTyp.getId() - 1]) && voraussetzungErfuellt(gebaeudeTyp)) {
+            if (gebaeudeStufen[gebaeudeTyp.getId()] < gebaeudeTyp.getMaxStufe() && speicher.passenBaukostenInSpeicher(gebaeudeTyp, gebaeudeStufen[gebaeudeTyp.getId()]) && voraussetzungErfuellt(gebaeudeTyp)) {
                 gebaeudeTypen.add(gebaeudeTyp);
             }
         }
@@ -90,7 +90,7 @@ public class Dorf {
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
         double verbleibendeZeit = 0;
 
-        int neueStufe = gebaeudeStufen[gebaeudeTyp.getId() - 1] + 1;
+        int neueStufe = gebaeudeStufen[gebaeudeTyp.getId()] + 1;
         Rohstoffe baukosten = gebaeudeDaten.getBaukosten(gebaeudeTyp, neueStufe);
 
         int baukostenHolz = baukosten.getHolz();
@@ -138,7 +138,7 @@ public class Dorf {
         speicher.addEisen(-baukostenEisen);
 
         //Rohstoffe für den abgeschlossenen Bau werden hinzugefuegt (falls Belohnungen aktiv sind) und die Stufe des Gebaeudes erhoeht
-        gebaeudeStufen[gebaeudeTyp.getId() - 1] += 1;
+        gebaeudeStufen[gebaeudeTyp.getId()] += 1;
         if (gebaeudeTyp == SPEICHER) {
             speicher.setStufe(neueStufe);
         }
@@ -196,15 +196,15 @@ public class Dorf {
     }
 
     public int getProduktionHolz() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[HOLZFAELLER.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[HOLZFAELLER.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public int getProduktionLehm() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[LEHMGRUBE.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[LEHMGRUBE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public int getProduktionEisen() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[EISENMINE.getId() - 1]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+        return Einstellungen.produktionsraten[gebaeudeStufen[EISENMINE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
     public Speicher getSpeicher() {
@@ -232,22 +232,22 @@ public class Dorf {
         return "\n Dorfname:               " + name +
                 "\n Speicherinhalt:         " + (getSpeicher()).getRohstoffvorrat() +
                 "\n verlorene Rohstoffe:    " + (getSpeicher()).getUebergelaufeneRohstoffe() +
-                "\n Stufe Hauptgebaeude:    " + gebaeudeStufen[HAUPTGEBAEUDE.getId() - 1] +
-                "\n Stufe Kaserne:          " + gebaeudeStufen[KASERNE.getId() - 1] +
-                "\n Stufe Stall:            " + gebaeudeStufen[STALL.getId() - 1] +
-                "\n Stufe Werkstatt:        " + gebaeudeStufen[WERKSTATT.getId() - 1] +
-                "\n Stufe Adelshof:         " + gebaeudeStufen[ADELSHOF.getId() - 1] +
-                "\n Stufe Schmiede:         " + gebaeudeStufen[SCHMIEDE.getId() - 1] +
-                "\n Stufe Versammlungsplatz:" + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId() - 1] +
-                "\n Stufe Statue:           " + gebaeudeStufen[STATUE.getId() - 1] +
-                "\n Stufe Marktplatz:       " + gebaeudeStufen[MARKTPLATZ.getId() - 1] +
-                "\n Stufe Holzfaeller:      " + gebaeudeStufen[HOLZFAELLER.getId() - 1] +
-                "\n Stufe Lehmgrube:        " + gebaeudeStufen[LEHMGRUBE.getId() - 1] +
-                "\n Stufe Eisenmine:        " + gebaeudeStufen[EISENMINE.getId() - 1] +
-                "\n Stufe Bauernhof:        " + gebaeudeStufen[BAUERNHOF.getId() - 1] +
-                "\n Stufe Speicher:         " + gebaeudeStufen[SPEICHER.getId() - 1] +
-                "\n Stufe Versteck:         " + gebaeudeStufen[VERSTECK.getId() - 1] +
-                "\n Stufe Wall:             " + gebaeudeStufen[WALL.getId() - 1] +
+                "\n Stufe Hauptgebaeude:    " + gebaeudeStufen[HAUPTGEBAEUDE.getId()] +
+                "\n Stufe Kaserne:          " + gebaeudeStufen[KASERNE.getId()] +
+                "\n Stufe Stall:            " + gebaeudeStufen[STALL.getId()] +
+                "\n Stufe Werkstatt:        " + gebaeudeStufen[WERKSTATT.getId()] +
+                "\n Stufe Adelshof:         " + gebaeudeStufen[ADELSHOF.getId()] +
+                "\n Stufe Schmiede:         " + gebaeudeStufen[SCHMIEDE.getId()] +
+                "\n Stufe Versammlungsplatz:" + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId()] +
+                "\n Stufe Statue:           " + gebaeudeStufen[STATUE.getId()] +
+                "\n Stufe Marktplatz:       " + gebaeudeStufen[MARKTPLATZ.getId()] +
+                "\n Stufe Holzfaeller:      " + gebaeudeStufen[HOLZFAELLER.getId()] +
+                "\n Stufe Lehmgrube:        " + gebaeudeStufen[LEHMGRUBE.getId()] +
+                "\n Stufe Eisenmine:        " + gebaeudeStufen[EISENMINE.getId()] +
+                "\n Stufe Bauernhof:        " + gebaeudeStufen[BAUERNHOF.getId()] +
+                "\n Stufe Speicher:         " + gebaeudeStufen[SPEICHER.getId()] +
+                "\n Stufe Versteck:         " + gebaeudeStufen[VERSTECK.getId()] +
+                "\n Stufe Wall:             " + gebaeudeStufen[WALL.getId()] +
                 "\n Gebäudestufen gesamt:   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausgebaute Gebäude:     " + ausgebauteGebaeude +
                 "\n Bauzeit (in h):         " + bisherigeBauzeit;
