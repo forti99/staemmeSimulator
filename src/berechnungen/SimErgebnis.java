@@ -25,22 +25,22 @@ public class SimErgebnis {
                 "\n Dorfname:                               " + optimalesDorf.getName() +
                 "\n Speicherinhalt:                         " + (optimalesDorf.getSpeicher()).getRohstoffvorrat() +
                 "\n verlorene Rohstoffe:                    " + (optimalesDorf.getSpeicher()).getUebergelaufeneRohstoffe() +
-                "\n Stufe Hauptgebaeude:                    " + gebaeudeStufen[HAUPTGEBAEUDE.getId() - 1] +
-                "\n Stufe Kaserne:                          " + gebaeudeStufen[KASERNE.getId() - 1] +
-                "\n Stufe Stall:                            " + gebaeudeStufen[STALL.getId() - 1] +
-                "\n Stufe Werkstatt:                        " + gebaeudeStufen[WERKSTATT.getId() - 1] +
-                "\n Stufe Adelshof:                         " + gebaeudeStufen[ADELSHOF.getId() - 1] +
-                "\n Stufe Schmiede:                         " + gebaeudeStufen[SCHMIEDE.getId() - 1] +
-                "\n Stufe Versammlungsplatz:                " + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId() - 1] +
-                "\n Stufe Statue:                           " + gebaeudeStufen[STATUE.getId() - 1] +
-                "\n Stufe Marktplatz:                       " + gebaeudeStufen[MARKTPLATZ.getId() - 1] +
-                "\n Stufe Holzfaeller:                      " + gebaeudeStufen[HOLZFAELLER.getId() - 1] +
-                "\n Stufe Lehmgrube:                        " + gebaeudeStufen[LEHMGRUBE.getId() - 1] +
-                "\n Stufe Eisenmine:                        " + gebaeudeStufen[EISENMINE.getId() - 1] +
-                "\n Stufe Bauernhof:                        " + gebaeudeStufen[BAUERNHOF.getId() - 1] +
-                "\n Stufe Speicher:                         " + gebaeudeStufen[SPEICHER.getId() - 1] +
-                "\n Stufe Versteck:                         " + gebaeudeStufen[VERSTECK.getId() - 1] +
-                "\n Stufe Wall:                             " + gebaeudeStufen[WALL.getId() - 1] +
+                "\n Stufe Hauptgebaeude:                    " + gebaeudeStufen[HAUPTGEBAEUDE.getId()] +
+                "\n Stufe Kaserne:                          " + gebaeudeStufen[KASERNE.getId()] +
+                "\n Stufe Stall:                            " + gebaeudeStufen[STALL.getId()] +
+                "\n Stufe Werkstatt:                        " + gebaeudeStufen[WERKSTATT.getId()] +
+                "\n Stufe Adelshof:                         " + gebaeudeStufen[ADELSHOF.getId()] +
+                "\n Stufe Schmiede:                         " + gebaeudeStufen[SCHMIEDE.getId()] +
+                "\n Stufe Versammlungsplatz:                " + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId()] +
+                "\n Stufe Statue:                           " + gebaeudeStufen[STATUE.getId()] +
+                "\n Stufe Marktplatz:                       " + gebaeudeStufen[MARKTPLATZ.getId()] +
+                "\n Stufe Holzfaeller:                      " + gebaeudeStufen[HOLZFAELLER.getId()] +
+                "\n Stufe Lehmgrube:                        " + gebaeudeStufen[LEHMGRUBE.getId()] +
+                "\n Stufe Eisenmine:                        " + gebaeudeStufen[EISENMINE.getId()] +
+                "\n Stufe Bauernhof:                        " + gebaeudeStufen[BAUERNHOF.getId()] +
+                "\n Stufe Speicher:                         " + gebaeudeStufen[SPEICHER.getId()] +
+                "\n Stufe Versteck:                         " + gebaeudeStufen[VERSTECK.getId()] +
+                "\n Stufe Wall:                             " + gebaeudeStufen[WALL.getId()] +
                 "\n Gebäudestufen gesamt:                   " + Arrays.toString(gebaeudeStufen) +
                 "\n Ausgebaute Gebäude:                     " + optimalesDorf.getAusgebauteGebaeude() +
                 "\n Bauzeit (in h):                         " + optimalesDorf.getBisherigeBauzeit();
