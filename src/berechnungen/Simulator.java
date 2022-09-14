@@ -4,15 +4,18 @@ package berechnungen;
 import gebaeude.gebaeudeSonderfunktion.Speicher;
 
 public class Simulator {
+    private int anzahlDurchlaeufe = 0;
+    private int optimalesDorf = null;
+    private long laufzeit = 0;
 
-    public SimErgebnis nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche) {
-        Dorf dorfFuerAusbau;
-        Dorf optimalesDorf = null;
-
+    public void nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche) {
+        anzahlDurchlaeufe = anzahlVersuche;
         double minBauzeit = Double.MAX_VALUE;
         double bauzeit;
+        Dorf dorfFuerAusbau;
+        
         final long timeStart = System.currentTimeMillis();
-        for (int i = 0; i < anzahlVersuche; i++) {
+        for (int i = 0; i < anzahlDurchlaeufe; i++) {
             dorfFuerAusbau = new Dorf("Dorf " + (i + 1), gebaeudeStufenAusbaustart, speicher);
             bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufenAusbauziel);
             System.out.println("Durchläufe im Simulator: " + i);
@@ -22,6 +25,38 @@ public class Simulator {
             }
         }
         final long timeStop = System.currentTimeMillis();
-        return new SimErgebnis(anzahlVersuche, optimalesDorf, timeStop - timeStart);
+        laufzeit = timeStop - timeStart;
     }
+    
+    public void ergebnisseDarstellen(){
+        int[] gebaeudeStufen = optimalesDorf.getGebaeudeStufen();
+
+        System.out.println(
+                "\n Anzahl Durchläufe:                      " + anzahlDurchlaeufe +
+                "\n Durchlaufzeit (in ms):                  " + laufzeit +
+                "\n Laufzeit pro Dorfberechnung (in ms):    " + laufzeit / (float) anzahlDurchlaeufe +
+                "\n Dorfname:                               " + optimalesDorf.getName() +
+                "\n Speicherinhalt:                         " + (optimalesDorf.getSpeicher()).getRohstoffvorrat() +
+                "\n verlorene Rohstoffe:                    " + (optimalesDorf.getSpeicher()).getUebergelaufeneRohstoffe() +
+                "\n Stufe Hauptgebaeude:                    " + gebaeudeStufen[HAUPTGEBAEUDE.getId()] +
+                "\n Stufe Kaserne:                          " + gebaeudeStufen[KASERNE.getId()] +
+                "\n Stufe Stall:                            " + gebaeudeStufen[STALL.getId()] +
+                "\n Stufe Werkstatt:                        " + gebaeudeStufen[WERKSTATT.getId()] +
+                "\n Stufe Adelshof:                         " + gebaeudeStufen[ADELSHOF.getId()] +
+                "\n Stufe Schmiede:                         " + gebaeudeStufen[SCHMIEDE.getId()] +
+                "\n Stufe Versammlungsplatz:                " + gebaeudeStufen[VERSAMMLUNGSPLATZ.getId()] +
+                "\n Stufe Statue:                           " + gebaeudeStufen[STATUE.getId()] +
+                "\n Stufe Marktplatz:                       " + gebaeudeStufen[MARKTPLATZ.getId()] +
+                "\n Stufe Holzfaeller:                      " + gebaeudeStufen[HOLZFAELLER.getId()] +
+                "\n Stufe Lehmgrube:                        " + gebaeudeStufen[LEHMGRUBE.getId()] +
+                "\n Stufe Eisenmine:                        " + gebaeudeStufen[EISENMINE.getId()] +
+                "\n Stufe Bauernhof:                        " + gebaeudeStufen[BAUERNHOF.getId()] +
+                "\n Stufe Speicher:                         " + gebaeudeStufen[SPEICHER.getId()] +
+                "\n Stufe Versteck:                         " + gebaeudeStufen[VERSTECK.getId()] +
+                "\n Stufe Wall:                             " + gebaeudeStufen[WALL.getId()] +
+                "\n Gebäudestufen gesamt:                   " + Arrays.toString(gebaeudeStufen) +
+                "\n Ausgebaute Gebäude:                     " + optimalesDorf.getAusgebauteGebaeude() +
+                "\n Bauzeit (in h):                         " + optimalesDorf.getBisherigeBauzeit()
+            )
+    }  
 }
