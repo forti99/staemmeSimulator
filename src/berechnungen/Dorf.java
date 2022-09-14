@@ -137,11 +137,13 @@ public class Dorf {
         speicher.addLehm(-baukostenLehm);
         speicher.addEisen(-baukostenEisen);
 
-        //Rohstoffe für den abgeschlossenen Bau werden hinzugefuegt (falls Belohnungen aktiv sind) und die Stufe des Gebaeudes erhoeht
+        //Nach dem abgeschlossenen Bau wird die Stufe des Gebaeudes erhoeht
         gebaeudeStufen[gebaeudeTyp.getId()] += 1;
         if (gebaeudeTyp == SPEICHER) {
             speicher.setStufe(neueStufe);
         }
+        
+        //Ueberprueft ob Belohungen aktiv sind und fuegt dann entsprechende Rohstoffe zum Speicher hinzu
         if (Einstellungen.belohnungenAktiv) {
             speicher.addRohstoffe(Einstellungen.getBelohnung(gebaeudeTyp, neueStufe));
         }
@@ -157,7 +159,7 @@ public class Dorf {
      *
      * @param gebaeudeTyp Gebaeude dessen Rohstoffkosten in den Speicher passen sollen
      * @param stufe       Stufe des Gebaeudes
-     * @return bauzeit fuer Speicherbau
+     * @return Bauzeit fuer den Speicherbau
      */
     public double speicherFuerGebaeudeAusbauen(GebaeudeTypen gebaeudeTyp, int stufe) {
         double bauzeit = 0;
@@ -171,7 +173,7 @@ public class Dorf {
      * Ueberprueft ob das Dorf die Voraussetzungen für den jeweiligen Gebaeudetyp erfuellt
      *
      * @param gebaeudeTyp Gebaeudetyp
-     * @return Aussage od die Voraussetzungen erfüllt sind
+     * @return Aussage ob die Voraussetzungen erfüllt sind
      */
     private boolean voraussetzungErfuellt(GebaeudeTypen gebaeudeTyp) {
         int[] voraussetzungen = gebaeudeDaten.getGebaeudeVoraussetzung(gebaeudeTyp);
@@ -195,14 +197,17 @@ public class Dorf {
         return new Dorf(name, gebaeudeStufen, speicher);
     }
 
+    //Liefert die aktuelle, von der Stufe des Holzfaellers abhaengige, Holzproduktion des Dorfes zurueck
     public int getProduktionHolz() {
         return Einstellungen.produktionsraten[gebaeudeStufen[HOLZFAELLER.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
+    //Liefert die aktuelle, von der Stufe der Lehmgrube abhaengige, Lehmproduktion des Dorfes zurueck
     public int getProduktionLehm() {
         return Einstellungen.produktionsraten[gebaeudeStufen[LEHMGRUBE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
 
+    //Liefert die aktuelle, von der Stufe der Eisenmine abhaengige, Eisenproduktion des Dorfes zurueck
     public int getProduktionEisen() {
         return Einstellungen.produktionsraten[gebaeudeStufen[EISENMINE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
     }
