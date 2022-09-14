@@ -16,15 +16,13 @@ public class Dorf {
 
     private final String name;
     private double bisherigeBauzeit = 0;
-    private final boolean belohnungenAktiv;
     private final List<GebaeudeTypen> ausgebauteGebaeude = new ArrayList<>();
     private final GebaeudeDaten gebaeudeDaten;
     private final int[] gebaeudeStufen;
     private final Speicher speicher;
 
-    public Dorf(String name, boolean belohnungenAktiv, int[] gebaeudeStufen, Speicher speicher) {
+    public Dorf(String name, int[] gebaeudeStufen, Speicher speicher) {
         this.name = name;
-        this.belohnungenAktiv = belohnungenAktiv;
         this.speicher = speicher;
         this.gebaeudeStufen = Arrays.copyOf(gebaeudeStufen, gebaeudeStufen.length);
         gebaeudeDaten = new GebaeudeDaten();
@@ -144,7 +142,7 @@ public class Dorf {
         if (gebaeudeTyp == SPEICHER) {
             speicher.setStufe(neueStufe);
         }
-        if (belohnungenAktiv) {
+        if (Einstellungen.belohnungenAktiv) {
             speicher.addRohstoffe(Einstellungen.getBelohnung(gebaeudeTyp, neueStufe));
         }
 
@@ -194,7 +192,7 @@ public class Dorf {
     }
 
     public Dorf dorfKopierenSpeicherZuruecksetzen(Speicher speicher) {
-        return new Dorf(name, belohnungenAktiv, gebaeudeStufen, speicher);
+        return new Dorf(name, gebaeudeStufen, speicher);
     }
 
     public int getProduktionHolz() {
@@ -219,10 +217,6 @@ public class Dorf {
 
     public double getBisherigeBauzeit() {
         return bisherigeBauzeit;
-    }
-
-    public boolean isBelohnungenAktiv() {
-        return belohnungenAktiv;
     }
 
     public int[] getGebaeudeStufen() {
