@@ -5,7 +5,7 @@ import gebaeude.gebaeudeSonderfunktion.Speicher;
 
 public class Simulator {
 
-    public SimErgebnis nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche, boolean belohnungAktiv) {
+    public SimErgebnis nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche) {
         Dorf dorfFuerAusbau;
         Dorf optimalesDorf = null;
 
@@ -13,7 +13,7 @@ public class Simulator {
         double bauzeit;
         final long timeStart = System.currentTimeMillis();
         for (int i = 0; i < anzahlVersuche; i++) {
-            dorfFuerAusbau = new Dorf("Dorf " + (i + 1), belohnungAktiv, gebaeudeStufenAusbaustart, speicher);
+            dorfFuerAusbau = new Dorf("Dorf " + (i + 1), gebaeudeStufenAusbaustart, speicher);
             bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufenAusbauziel);
             System.out.println("Durchläufe im Simulator: " + i);
             if (bauzeit < minBauzeit) {
