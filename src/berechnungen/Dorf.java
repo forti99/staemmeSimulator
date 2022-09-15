@@ -104,25 +104,12 @@ public class Dorf {
             verbleibendeZeit += speicherFuerGebaeudeAusbauen(gebaeudeTyp, neueStufe);
         }
 
-        if (baukostenHolz > speicherHolzvorrat) {
-            fehlendeRohstoffe.setHolz(baukostenHolz - speicherHolzvorrat);
-        } else {
-            fehlendeRohstoffe.setHolz(0);
-        }
+        //Es wird ermittelt ob noch Rohstoffe für den Bau des Gebaeudes fehlen. Wen nicht wird der entsprechende Wert auf "0" gesetzt
+        fehlendeRohstoffe.setHolz(Math.max(baukostenHolz - speicherHolzvorrat, 0));
+        fehlendeRohstoffe.setLehm(Math.max(baukostenLehm - speicherLehmvorrat, 0));
+        fehlendeRohstoffe.setEisen(Math.max(baukostenEisen - speicherEisenvorrat, 0));
 
-        if (baukostenLehm > speicherLehmvorrat) {
-            fehlendeRohstoffe.setLehm(baukostenLehm - speicherLehmvorrat);
-        } else {
-            fehlendeRohstoffe.setLehm(0);
-        }
-
-        if (baukostenEisen > speicherEisenvorrat) {
-            fehlendeRohstoffe.setEisen(baukostenEisen - speicherEisenvorrat);
-        } else {
-            fehlendeRohstoffe.setEisen(0);
-        }
-
-        //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind, wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
+        //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
         double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktionHolz();
         double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktionLehm();
         double verbleibendeZeitEisen = fehlendeRohstoffe.getEisen() / (double) getProduktionEisen();
