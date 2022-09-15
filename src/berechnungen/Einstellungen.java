@@ -31,7 +31,15 @@ public class Einstellungen {
         return produktionsraten[gebaeudeStufe] * weltengeschwindigkeit * minengeschwindigkeit;   
     }
     
-    public isBelohnungAktiv() {
-        return belohnungAktiv;
+    public int getWeltengeschwindigkeit() {
+        return weltengeschwindigkeit;
+    }
+    
+    public int minengeschwindigkeit() {
+        return minengeschwindigkeit;   
+    }
+    
+    public isBelohnungenAktiv() {
+        return belohnungenAktiv;
     }
 }
