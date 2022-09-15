@@ -39,7 +39,7 @@ public class Einstellungen {
         return minengeschwindigkeit;   
     }
     
-    public isBelohnungenAktiv() {
+    public boolean isBelohnungenAktiv() {
         return belohnungenAktiv;
     }
 }
