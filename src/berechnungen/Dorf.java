@@ -20,12 +20,14 @@ public class Dorf {
     private final GebaeudeDaten gebaeudeDaten;
     private final int[] gebaeudeStufen;
     private final Speicher speicher;
+    private final Einstellungen;
 
-    public Dorf(String name, int[] gebaeudeStufen, Speicher speicher) {
+    public Dorf(String name, int[] gebaeudeStufen, Speicher speicher, Einstellungen einstellungen) {
         this.name = name;
         this.speicher = speicher;
         this.gebaeudeStufen = Arrays.copyOf(gebaeudeStufen, gebaeudeStufen.length);
         gebaeudeDaten = new GebaeudeDaten();
+        this.einstellungen = einstellungen;
     }
 
     public double genauNachStufenAusbauen(int[] gebaeudeStufen) {
@@ -110,16 +112,16 @@ public class Dorf {
         fehlendeRohstoffe.setEisen(Math.max(baukostenEisen - speicherEisenvorrat, 0));
 
         //Fehlende Zeit bis genuegend Rohstoffe vorhanden sind wird berechnet. Ausschlaggebend ist dabei der Rohstoff auf den am laengsten "gewartet" werden muss.
-        double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktionHolz();
-        double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktionLehm();
-        double verbleibendeZeitEisen = fehlendeRohstoffe.getEisen() / (double) getProduktionEisen();
+        double verbleibendeZeitHolz = fehlendeRohstoffe.getHolz() / (double) getProduktion(HOLZFAELLER);
+        double verbleibendeZeitLehm = fehlendeRohstoffe.getLehm() / (double) getProduktion(LEHMGRUBE);
+        double verbleibendeZeitEisen = fehlendeRohstoffe.getEisen() / (double) getProduktion(EISENMINE);
         verbleibendeZeit += Math.max(Math.max(verbleibendeZeitHolz, verbleibendeZeitLehm), verbleibendeZeitEisen);
 
         //Inhalt des Speichers wird entsprechend aktualisiert. Dabei werden die in der Wartezeit erzeugten Rohstoffe eingelagert,
         //aber gleichzeitig die Baukosten des Gebaeudes direkt wieder abgezogen
-        speicher.addHolz((int) Math.ceil(verbleibendeZeit * getProduktionHolz()));
-        speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktionLehm()));
-        speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktionEisen()));
+        speicher.addHolz((int) Math.ceil(verbleibendeZeit * getProduktion(HOLZFAELLER)));
+        speicher.addLehm((int) Math.ceil(verbleibendeZeit * getProduktion(LEHMGRUBE)));
+        speicher.addEisen((int) Math.ceil(verbleibendeZeit * getProduktion(EISENMINE)));
         speicher.addHolz(-baukostenHolz);
         speicher.addLehm(-baukostenLehm);
         speicher.addEisen(-baukostenEisen);
@@ -131,8 +133,8 @@ public class Dorf {
         }
         
         //Ueberprueft ob Belohungen aktiv sind und fuegt dann entsprechende Rohstoffe zum Speicher hinzu
-        if (Einstellungen.belohnungenAktiv) {
-            speicher.addRohstoffe(Einstellungen.getBelohnung(gebaeudeTyp, neueStufe));
+        if (einstellungen.isBelohnungenAktiv()) {
+            speicher.addRohstoffe(einstellungen.getBelohnung(gebaeudeTyp, neueStufe));
         }
 
         ausgebauteGebaeude.add(gebaeudeTyp);
@@ -183,20 +185,10 @@ public class Dorf {
     public Dorf dorfKopierenSpeicherZuruecksetzen(Speicher speicher) {
         return new Dorf(name, gebaeudeStufen, speicher);
     }
-
-    //Liefert die aktuelle, von der Stufe des Holzfaellers abhaengige, Holzproduktion des Dorfes zurueck
-    public int getProduktionHolz() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[HOLZFAELLER.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
-    }
-
-    //Liefert die aktuelle, von der Stufe der Lehmgrube abhaengige, Lehmproduktion des Dorfes zurueck
-    public int getProduktionLehm() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[LEHMGRUBE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
-    }
-
-    //Liefert die aktuelle, von der Stufe der Eisenmine abhaengige, Eisenproduktion des Dorfes zurueck
-    public int getProduktionEisen() {
-        return Einstellungen.produktionsraten[gebaeudeStufen[EISENMINE.getId()]] * Einstellungen.weltengeschwindigkeit * Einstellungen.minengeschwindigkeit;
+    
+    //Liefert die Produktion fuer das uebergebene Rohstoffgebaeude zurueck
+    public int getProduktion(GebaeudeTypen gebaeudeTyp) {
+        return einstellungen.getProduktionsrate(gebaeudeStufen[gebaeudeTyp.getId()]);
     }
 
     public Speicher getSpeicher() {
@@ -217,6 +209,10 @@ public class Dorf {
 
     public List<GebaeudeTypen> getAusgebauteGebaeude() {
         return ausgebauteGebaeude;
+    }
+                                                 
+    public Einstellungen getEinstellungen(){
+        return einstellungen;
     }
 
     @Override
