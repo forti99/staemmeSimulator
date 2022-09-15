@@ -8,7 +8,7 @@ public class Simulator {
     private int optimalesDorf = null;
     private long laufzeit = 0;
 
-    public void nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche) {
+    public void nachStufenAusbauen(int[] gebaeudeStufenAusbaustart, int[] gebaeudeStufenAusbauziel, Speicher speicher, int anzahlVersuche, Einstellungen einstellungen) {
         anzahlDurchlaeufe = anzahlVersuche;
         double minBauzeit = Double.MAX_VALUE;
         double bauzeit;
@@ -16,7 +16,7 @@ public class Simulator {
         
         final long timeStart = System.currentTimeMillis();
         for (int i = 0; i < anzahlDurchlaeufe; i++) {
-            dorfFuerAusbau = new Dorf("Dorf " + (i + 1), gebaeudeStufenAusbaustart, speicher);
+            dorfFuerAusbau = new Dorf("Dorf " + (i + 1), gebaeudeStufenAusbaustart, speicher, einstellungen);
             bauzeit = dorfFuerAusbau.genauNachStufenAusbauen(gebaeudeStufenAusbauziel);
             System.out.println("Durchläufe im Simulator: " + i);
             if (bauzeit < minBauzeit) {
@@ -30,11 +30,17 @@ public class Simulator {
     
     public void ergebnisseDarstellen(){
         int[] gebaeudeStufen = optimalesDorf.getGebaeudeStufen();
+        Einstellungen einstellungen = optimalesDorf.getEinstellungen();
 
         System.out.println(
                 "\n Anzahl Durchläufe:                      " + anzahlDurchlaeufe +
                 "\n Durchlaufzeit (in ms):                  " + laufzeit +
                 "\n Laufzeit pro Dorfberechnung (in ms):    " + laufzeit / (float) anzahlDurchlaeufe +
+                "\n                                         " +
+                "\n Weltengeschwindigkeit:                  " + einstellungen.getWeltengeschwindigkeit() +
+                "\n Minengeschwindigkeit:                   " + einstellungen.getMinengeschwindigkeit() +
+                "\n Belohnungssystem aktiv?                 " + einstellungen.isBelohnungenAktiv() +
+                "\n                                         " +
                 "\n Dorfname:                               " + optimalesDorf.getName() +
                 "\n Speicherinhalt:                         " + (optimalesDorf.getSpeicher()).getRohstoffvorrat() +
                 "\n verlorene Rohstoffe:                    " + (optimalesDorf.getSpeicher()).getUebergelaufeneRohstoffe() +
