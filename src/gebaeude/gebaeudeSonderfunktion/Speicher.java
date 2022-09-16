@@ -22,12 +22,6 @@ public class Speicher {
         setKapazitaet();
     }
 
-    public Speicher(int stufe) {
-        this.stufe = stufe;
-        gebaeudeDaten = new GebaeudeDaten();
-        setKapazitaet();
-    }
-
     private void setKapazitaet() {
         kapazitaet[0] = 1000;
         kapazitaet[1] = 1229;

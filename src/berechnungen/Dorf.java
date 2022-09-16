@@ -20,7 +20,7 @@ public class Dorf {
     private final GebaeudeDaten gebaeudeDaten;
     private final int[] gebaeudeStufen;
     private final Speicher speicher;
-    private final Einstellungen;
+    private final Einstellungen einstellungen;
 
     public Dorf(String name, int[] gebaeudeStufen, Speicher speicher, Einstellungen einstellungen) {
         this.name = name;
@@ -131,7 +131,7 @@ public class Dorf {
         if (gebaeudeTyp == SPEICHER) {
             speicher.setStufe(neueStufe);
         }
-        
+
         //Ueberprueft ob Belohungen aktiv sind und fuegt dann entsprechende Rohstoffe zum Speicher hinzu
         if (einstellungen.isBelohnungenAktiv()) {
             speicher.addRohstoffe(einstellungen.getBelohnung(gebaeudeTyp, neueStufe));
@@ -182,10 +182,6 @@ public class Dorf {
         }
     }
 
-    public Dorf dorfKopierenSpeicherZuruecksetzen(Speicher speicher) {
-        return new Dorf(name, gebaeudeStufen, speicher);
-    }
-    
     //Liefert die Produktion fuer das uebergebene Rohstoffgebaeude zurueck
     public int getProduktion(GebaeudeTypen gebaeudeTyp) {
         return einstellungen.getProduktionsrate(gebaeudeStufen[gebaeudeTyp.getId()]);
@@ -210,8 +206,8 @@ public class Dorf {
     public List<GebaeudeTypen> getAusgebauteGebaeude() {
         return ausgebauteGebaeude;
     }
-                                                 
-    public Einstellungen getEinstellungen(){
+
+    public Einstellungen getEinstellungen() {
         return einstellungen;
     }
 
