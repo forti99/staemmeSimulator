@@ -1,6 +1,6 @@
 package datenverarbeitung;
 
-import berechnungen.Rohstoffe;
+import util.Rohstoffe;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataProcessor {
-    private static final Map<String, Gebaeude> gebaeudeDaten = new HashMap<>();
+    private static final Map<Integer, Gebaeude> gebaeudeDaten = new HashMap<>();
 
 
     public static void loadGebaeudeInfos(String welt) throws Exception {
@@ -41,22 +41,22 @@ public class DataProcessor {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(new InputSource(new StringReader(xmlResponse.toString())));
 
-        fillGebaeudeDaten(new Gebaeude("Hauptgebäude"), doc.getElementsByTagName("main").item(0));
-        fillGebaeudeDaten(new Gebaeude("Kaserne"), doc.getElementsByTagName("barracks").item(0));
-        fillGebaeudeDaten(new Gebaeude("Stall"), doc.getElementsByTagName("stable").item(0));
-        fillGebaeudeDaten(new Gebaeude("Werkstatt"), doc.getElementsByTagName("garage").item(0));
-        fillGebaeudeDaten(new Gebaeude("Kirche"), doc.getElementsByTagName("church").item(0));
-        fillGebaeudeDaten(new Gebaeude("Erste Kirche"), doc.getElementsByTagName("church_f").item(0));
-        fillGebaeudeDaten(new Gebaeude("Wachturm"), doc.getElementsByTagName("watchtower").item(0));
-        fillGebaeudeDaten(new Gebaeude("Adelshof"), doc.getElementsByTagName("snob").item(0));
-        fillGebaeudeDaten(new Gebaeude("Schmiede"), doc.getElementsByTagName("smith").item(0));
-        fillGebaeudeDaten(new Gebaeude("Versammlungsplatz"), doc.getElementsByTagName("place").item(0));
-        fillGebaeudeDaten(new Gebaeude("Statue"), doc.getElementsByTagName("statue").item(0));
-        fillGebaeudeDaten(new Gebaeude("Markt"), doc.getElementsByTagName("market").item(0));
-        fillGebaeudeDaten(new Gebaeude("Bauernhof"), doc.getElementsByTagName("farm").item(0));
-        fillGebaeudeDaten(new Gebaeude("Speicher"), doc.getElementsByTagName("storage").item(0));
-        fillGebaeudeDaten(new Gebaeude("Versteck"), doc.getElementsByTagName("hide").item(0));
-        fillGebaeudeDaten(new Gebaeude("Wall"), doc.getElementsByTagName("wall").item(0));
+        fillGebaeudeDaten(new Gebaeude(1), doc.getElementsByTagName("main").item(0));
+        fillGebaeudeDaten(new Gebaeude(2), doc.getElementsByTagName("barracks").item(0));
+        fillGebaeudeDaten(new Gebaeude(3), doc.getElementsByTagName("stable").item(0));
+        fillGebaeudeDaten(new Gebaeude(4), doc.getElementsByTagName("garage").item(0));
+        fillGebaeudeDaten(new Gebaeude(5), doc.getElementsByTagName("church").item(0));
+        fillGebaeudeDaten(new Gebaeude(6), doc.getElementsByTagName("church_f").item(0));
+        fillGebaeudeDaten(new Gebaeude(7), doc.getElementsByTagName("watchtower").item(0));
+        fillGebaeudeDaten(new Gebaeude(8), doc.getElementsByTagName("snob").item(0));
+        fillGebaeudeDaten(new Gebaeude(9), doc.getElementsByTagName("smith").item(0));
+        fillGebaeudeDaten(new Gebaeude(10), doc.getElementsByTagName("place").item(0));
+        fillGebaeudeDaten(new Gebaeude(11), doc.getElementsByTagName("statue").item(0));
+        fillGebaeudeDaten(new Gebaeude(12), doc.getElementsByTagName("market").item(0));
+        fillGebaeudeDaten(new Gebaeude(16), doc.getElementsByTagName("farm").item(0));
+        fillGebaeudeDaten(new Gebaeude(17), doc.getElementsByTagName("storage").item(0));
+        fillGebaeudeDaten(new Gebaeude(18), doc.getElementsByTagName("hide").item(0));
+        fillGebaeudeDaten(new Gebaeude(19), doc.getElementsByTagName("wall").item(0));
         fillRohstoffGebaeudeDaten(doc.getDocumentElement().getChildNodes());
     }
 
@@ -66,7 +66,7 @@ public class DataProcessor {
             fillGebaeudekosten(gebaeude);
         }
 
-        gebaeudeDaten.put(gebaeude.getName(), gebaeude);
+        gebaeudeDaten.put(gebaeude.getId(), gebaeude);
     }
 
     private static void fillGebaeudegrunddaten(Gebaeude gebaeude, Node gebaeudeNode) {
@@ -124,13 +124,13 @@ public class DataProcessor {
         for (int i = 0; i < topLevelElements.getLength(); i++) {
             Node node = topLevelElements.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals("wood")) {
-                fillGebaeudeDaten(new Gebaeude("Holzfäller"), node);
+                fillGebaeudeDaten(new Gebaeude(13), node);
             }
             if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals("stone")) {
-                fillGebaeudeDaten(new Gebaeude("Lehmgrube"), node);
+                fillGebaeudeDaten(new Gebaeude(14), node);
             }
             if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals("iron")) {
-                fillGebaeudeDaten(new Gebaeude("Eisenmine"), node);
+                fillGebaeudeDaten(new Gebaeude(15), node);
             }
         }
 
@@ -138,14 +138,14 @@ public class DataProcessor {
 
     /*
     Methode zum Runden vor dem eigentlichen Runden auf eine Ganzzahl um zu verhindern, dass wegen der Double-Ungenauigkeit
-    z.B. 229,499999997 zu 229 gerundet wird. Eigentlich ist 229,499999997 = 229,5und muss damit zu 230 gerundet werden
+    z.B. 229,499999997 zu 229 gerundet wird. Eigentlich ist 229,499999997 = 229,5 und muss damit zu 230 gerundet werden
      */
     private static double round(double value, int decimalPoints) {
         double d = Math.pow(10, decimalPoints);
         return Math.round(value * d) / d;
     }
 
-    public static Map<String, Gebaeude> getGebaeudeDaten() {
+    public static Map<Integer, Gebaeude> getGebaeudeDaten() {
         return gebaeudeDaten;
     }
 }

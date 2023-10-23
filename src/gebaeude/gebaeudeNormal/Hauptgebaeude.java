@@ -1,7 +1,7 @@
 package gebaeude.gebaeudeNormal;
 
 
-import berechnungen.Rohstoffe;
+import util.Rohstoffe;
 import gebaeude.Gebaeude;
 
 public class Hauptgebaeude implements Gebaeude {

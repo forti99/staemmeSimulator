@@ -1,13 +1,13 @@
 package datenverarbeitung;
 
-import berechnungen.Rohstoffe;
+import util.Rohstoffe;
 
 import java.util.Map;
 
 public class Gebaeude {
     private Map<Integer, Rohstoffe> baukostenProStufe;
     private Map<Integer, Integer> bevoelkerungskostenProStufe;
-    private String name;
+    private int id;
     private int maxLevel;
     private int minLevel;
     private int wood;
@@ -36,16 +36,16 @@ public class Gebaeude {
         this.bevoelkerungskostenProStufe = bevoelkerungskostenProStufe;
     }
 
-    public Gebaeude(String name) {
-        this.name = name;
+    public Gebaeude(int id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getMaxLevel() {
@@ -142,7 +142,7 @@ public class Gebaeude {
         return "Gebaeude{" +
                 "baukostenProStufe=" + baukostenProStufe +
                 ", bevoelkerungskostenProStufe=" + bevoelkerungskostenProStufe +
-                ", name='" + name + '\'' +
+                ", name='" + id + '\'' +
                 ", maxLevel=" + maxLevel +
                 ", minLevel=" + minLevel +
                 ", wood=" + wood +

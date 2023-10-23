@@ -5,6 +5,8 @@ import gebaeude.Gebaeude;
 import gebaeude.GebaeudeFabrik;
 import gebaeude.GebaeudeTypen;
 import gebaeude.gebaeudeSonderfunktion.Speicher;
+import util.Einstellungen;
+import util.Rohstoffe;
 
 import java.util.ArrayList;
 import java.util.Arrays;

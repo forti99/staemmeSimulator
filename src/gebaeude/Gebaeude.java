@@ -1,7 +1,7 @@
 package gebaeude;
 
 
-import berechnungen.Rohstoffe;
+import util.Rohstoffe;
 
 public interface Gebaeude {
 

@@ -1,4 +1,4 @@
-package berechnungen;
+package util;
 
 import gebaeude.Gebaeude;
 

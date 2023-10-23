@@ -1,4 +1,4 @@
-package berechnungen;
+package util;
 
 public class Rohstoffe {
     private int holz;

@@ -1,6 +1,6 @@
 package gebaeude.gebaeudeNormal;
 
-import berechnungen.Rohstoffe;
+import util.Rohstoffe;
 import gebaeude.Gebaeude;
 
 public class Statue implements Gebaeude {

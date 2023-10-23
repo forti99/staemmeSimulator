@@ -1,5 +1,8 @@
 package berechnungen;
 
+import datenverarbeitung.DataProcessor;
+import util.Bauzeit;
+
 public class BauzeitRechner {
     public BauzeitRechner() {
         gesamtfaktoren[0] = 0.008;
@@ -32,9 +35,57 @@ public class BauzeitRechner {
         gesamtfaktoren[27] = 152.532;
         gesamtfaktoren[28] = 181.376;
         gesamtfaktoren[29] = 215.554;
+
+        hgfaktoren[0] = 0.9100;
+        hgfaktoren[1] = 0.8729;
+        hgfaktoren[2] = 0.8372;
+        hgfaktoren[3] = 0.7995;
+        hgfaktoren[4] = 0.7608;
+        hgfaktoren[5] = 0.7242;
+        hgfaktoren[6] = 0.6898;
+        hgfaktoren[7] = 0.6570;
+        hgfaktoren[8] = 0.6254;
+        hgfaktoren[9] = 0.590000000;
+        hgfaktoren[10] = 0.5666;
+        hgfaktoren[11] = 0.5398;
+        hgfaktoren[12] = 0.5141;
+        hgfaktoren[13] = 0.4897;
+        hgfaktoren[14] = 0.4663;
+        hgfaktoren[15] = 0.4442;
+        hgfaktoren[16] = 0.4230;
+        hgfaktoren[17] = 0.4028;
+        hgfaktoren[18] = 0.3837;
+        hgfaktoren[19] = 0.3654;
+        hgfaktoren[20] = 0.3480;
+        hgfaktoren[21] = 0.3314;
+        hgfaktoren[22] = 0.3156;
+        hgfaktoren[23] = 0.3006;
+        hgfaktoren[24] = 0.2862;
+        hgfaktoren[25] = 0.2725;
+        hgfaktoren[26] = 0.2596;
+        hgfaktoren[27] = 0.2473;
+        hgfaktoren[28] = 0.2355;
+        hgfaktoren[29] = 0.2236;
     }
 
     private final double[] gesamtfaktoren = new double[30];
+    private final double[] hgfaktoren = new double[30];
+
+    public Bauzeit berechneReineBauzeitAusbauplan(int[] startStufenGebaeude, int[] ausbauplan) {
+        double gesamtbauzeit = 0;
+
+        for (int gebaeudeId : ausbauplan) {
+            int stufeHg = startStufenGebaeude[0];
+            startStufenGebaeude[gebaeudeId - 1]++;
+            gesamtbauzeit += berechneBauzeitInSekunden(gebaeudeId, stufeHg, startStufenGebaeude[gebaeudeId-1]);
+        }
+        return Bauzeit.secondsToBauzeit((int) Math.round(gesamtbauzeit));
+    }
+
+    public double berechneBauzeitInSekunden(int gebaeudeId, int stufeHg, int stufeGebaeudeNachAusbau) {
+        double grundbauzeit = DataProcessor.getGebaeudeDaten().get(gebaeudeId).getBuildTime();
+        return grundbauzeit * hgfaktoren[stufeHg - 1] * gesamtfaktoren[stufeGebaeudeNachAusbau - 1];
+    }
 
     public double berechneHgFaktor(String bauzeitstring, double grundbauzeit, int stufeGebaeudenachAusbau) {
         return bauzeitStringZuSekunden(bauzeitstring) / (grundbauzeit * gesamtfaktoren[stufeGebaeudenachAusbau - 1]);
@@ -47,4 +98,6 @@ public class BauzeitRechner {
         double sekunden = Double.parseDouble(bauzeitensplits[2]);
         return stundenInSekunden + minutenInSekunden + sekunden;
     }
+
+
 }
