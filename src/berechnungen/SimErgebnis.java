@@ -5,7 +5,7 @@ import gebaeude.gebaeudeSonderfunktion.Speicher;
 import java.util.Arrays;
 
 public class SimErgebnis {
-    private int durchlaeufe;
+    private final int durchlaeufe;
     private int durchlaeufMitOptimalemDorf;
     private Dorf optimalesDorf;
     private long laufzeit;
@@ -15,10 +15,6 @@ public class SimErgebnis {
         this.durchlaeufMitOptimalemDorf = durchlaeufMitOptimalemDorf;
         this.optimalesDorf = optimalesDorf;
         this.laufzeit = laufzeit;
-    }
-
-    public void setDurchlaeufe(int durchlaeufe) {
-        this.durchlaeufe = durchlaeufe;
     }
 
     public void setDurchlaeufMitOptimalemDorf(int durchlaeufMitOptimalemDorf) {

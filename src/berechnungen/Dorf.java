@@ -133,27 +133,7 @@ public class Dorf implements Comparable {
      * @return Zeit, die gewartet werden muss, bis das Gebaeude gebaut werden kann
      */
     public double gebaeudeAusbauen(int gebaeudeId) {
-        Gebaeude gebaeude;
-        switch (gebaeudeId) {
-            case 1 -> gebaeude = this.hauptgebaeude;
-            case 2 -> gebaeude = this.kaserne;
-            case 3 -> gebaeude = this.stall;
-            case 4 -> gebaeude = this.werkstatt;
-            case 5 -> gebaeude = this.adelshof;
-            case 6 -> gebaeude = this.schmiede;
-            case 7 -> gebaeude = this.versammlungsplatz;
-            case 8 -> gebaeude = this.statue;
-            case 9 -> gebaeude = this.marktplatz;
-            case 10 -> gebaeude = this.holzfaeller;
-            case 11 -> gebaeude = this.lehmgrube;
-            case 12 -> gebaeude = this.eisenmine;
-            case 13 -> gebaeude = this.bauernhof;
-            case 14 -> gebaeude = this.speicher;
-            case 15 -> gebaeude = this.versteck;
-            case 16 -> gebaeude = this.wall;
-            default -> throw new IllegalArgumentException("Falsche ID beim Gebäudebau übergeben!");
-
-        }
+        Gebaeude gebaeude = getGebaeude(gebaeudeId);
 
         int neueStufe = gebaeude.getStufe() + 1;
         Rohstoffe fehlendeRohstoffe = new Rohstoffe();
@@ -206,6 +186,31 @@ public class Dorf implements Comparable {
 
         this.bisherigeBauzeit += verbleibendeZeit;
         return verbleibendeZeit;
+    }
+
+    private Gebaeude getGebaeude(int gebaeudeId) {
+        Gebaeude gebaeude;
+        switch (gebaeudeId) {
+            case 1 -> gebaeude = this.hauptgebaeude;
+            case 2 -> gebaeude = this.kaserne;
+            case 3 -> gebaeude = this.stall;
+            case 4 -> gebaeude = this.werkstatt;
+            case 5 -> gebaeude = this.adelshof;
+            case 6 -> gebaeude = this.schmiede;
+            case 7 -> gebaeude = this.versammlungsplatz;
+            case 8 -> gebaeude = this.statue;
+            case 9 -> gebaeude = this.marktplatz;
+            case 10 -> gebaeude = this.holzfaeller;
+            case 11 -> gebaeude = this.lehmgrube;
+            case 12 -> gebaeude = this.eisenmine;
+            case 13 -> gebaeude = this.bauernhof;
+            case 14 -> gebaeude = this.speicher;
+            case 15 -> gebaeude = this.versteck;
+            case 16 -> gebaeude = this.wall;
+            default -> throw new IllegalArgumentException("Falsche ID beim Gebäudebau übergeben!");
+
+        }
+        return gebaeude;
     }
 
     /**
@@ -267,16 +272,8 @@ public class Dorf implements Comparable {
         return bisherigeBauzeit;
     }
 
-    public boolean isBelohnungenAktiv() {
-        return belohnungenAktiv;
-    }
-
     public List<Integer> getAusgebauteGebaeude() {
         return ausgebauteGebaeude;
-    }
-
-    public List<Gebaeude> getGebaeudeListe() {
-        return gebaeudeListe;
     }
 
     public int[] getGebaeudeStufen() {
